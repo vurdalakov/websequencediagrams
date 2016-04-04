@@ -1,0 +1,86 @@
+﻿<Window x:Class="Vurdalakov.WebSequenceDiagrams.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Vurdalakov.WebSequenceDiagrams"
+        xmlns:vurdalakov="clr-namespace:Vurdalakov"
+        mc:Ignorable="d"
+        Title="WebSequenceDiagrams" Width="800" Height="600">
+
+    <Window.InputBindings>
+        <KeyBinding Key="X" Modifiers="Alt" Command="{Binding ExitCommand}" />
+        <KeyBinding Key="F5" Modifiers="" Command="{Binding RefreshCommand}" />
+    </Window.InputBindings>
+    
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+            <Menu ToolBar.OverflowMode="Never">
+                <MenuItem Header="_File">
+                    <MenuItem Header="E_xit" InputGestureText="Alt+X" Command="{Binding ExitCommand}" />
+                </MenuItem>
+                <MenuItem Header="_View">
+                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding RefreshCommand}" />
+                </MenuItem>
+                <MenuItem Header="_Style">
+                    <MenuItem Header="default" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=TwoWay}" />
+                    <MenuItem Header="earth" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Earth, Mode=TwoWay}" />
+                    <MenuItem Header="magazine" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Magazine, Mode=TwoWay}" />
+                    <MenuItem Header="modern-blue" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Modern_Blue, Mode=TwoWay}" />
+                    <MenuItem Header="mscgen" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Mscgen, Mode=TwoWay}" />
+                    <MenuItem Header="napkin" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Napkin, Mode=TwoWay}" />
+                    <MenuItem Header="omegapple" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Omegapple, Mode=TwoWay}" />
+                    <MenuItem Header="patent" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Patent, Mode=TwoWay}" />
+                    <MenuItem Header="qsd" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Qsd, Mode=TwoWay}" />
+                    <MenuItem Header="rose" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Rose, Mode=TwoWay}" />
+                    <MenuItem Header="roundgreen" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Roundgreen, Mode=TwoWay}" />
+                </MenuItem>
+                <MenuItem Header="_Options">
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About..." Command="{Binding AboutCommand}" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <!--DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <ToolBarPanel DockPanel.Dock="Top">
+                <ToolBar ToolBarTray.IsLocked="True">
+                    <Button Margin="8,0,8,0" Command="{Binding RefreshCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/toolbar_refresh.png" Height="24"/>
+                            <TextBlock Text="Refresh" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarPanel>
+        </DockPanel-->
+
+        <TextBox Grid.Row="2" Grid.Column="0" AcceptsReturn="True" AcceptsTab="True" Text="{Binding WsdScript, Mode=TwoWay}" vurdalakov:TextBoxUpdateSourceBehavior.UpdateSourceOnChange="True" />
+
+        <Image Grid.Row="2" Grid.Column="1" Source="{Binding WsdImage}" />
+
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Summary}" />
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
