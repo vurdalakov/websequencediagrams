@@ -70,7 +70,7 @@
             </ToolBarPanel>
         </DockPanel-->
 
-        <TextBox Grid.Row="2" Grid.Column="0" AcceptsReturn="True" AcceptsTab="True" Text="{Binding WsdScript, Mode=TwoWay}" vurdalakov:TextBoxUpdateSourceBehavior.UpdateSourceOnChange="True" />
+        <TextBox Grid.Row="2" Grid.Column="0" AcceptsReturn="True" AcceptsTab="True" Text="{Binding WsdScript, Mode=TwoWay}" vurdalakov:TextBoxUpdateSourceBehavior.UpdateSourceOnChange="True" vurdalakov:TextBoxLineColumnBehavior.LineNumber="{Binding LineNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.ColumnNumber="{Binding ColumnNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.Attach="True" />
 
         <Image Grid.Row="2" Grid.Column="1" Source="{Binding WsdImage}" />
 
@@ -98,10 +98,15 @@
         <StatusBar Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Summary}" />
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock>
+                        <Run Text="Ln" />
+                        <Run Text="{Binding LineNumber}" />
+                        <Run Text="Col" />
+                        <Run Text="{Binding ColumnNumber}" />
+                </TextBlock>
             </StatusBarItem>
         </StatusBar>
     </Grid>

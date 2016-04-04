@@ -62,6 +62,39 @@
             }
         }
 
+        private Int32 _lineNumber = 1;
+        public Int32 LineNumber
+        {
+            get
+            {
+                return this._lineNumber;
+            }
+            set
+            {
+                if (value != this._lineNumber)
+                {
+                    this._lineNumber = value;
+                    this.OnPropertyChanged(() => this.LineNumber);
+                }
+            }
+        }
+
+        private Int32 _columnNumber = 1;
+        public Int32 ColumnNumber
+        {
+            get
+            {
+                return this._columnNumber;
+            }
+            set
+            {
+                if (value != this._columnNumber)
+                {
+                    this._columnNumber = value;
+                    this.OnPropertyChanged(() => this.ColumnNumber);
+                }
+            }
+        }
 
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
 
