@@ -44,6 +44,8 @@
 
             var root = JObject.Parse(jsonText);
 
+            WebSequenceDiagramsException.CheckResult(root);
+
             var img = root.GetValue("img");
 
             return webClient.DownloadData("http://www.websequencediagrams.com/" + img);

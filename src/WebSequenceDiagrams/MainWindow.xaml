@@ -18,7 +18,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -73,7 +74,28 @@
 
         <Image Grid.Row="2" Grid.Column="1" Source="{Binding WsdImage}" />
 
-        <StatusBar Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+        <ListView Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="false">
+                    <GridViewColumn Header="Line" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Line}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Error description" Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Message}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StatusBar Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding Summary}" />

@@ -62,13 +62,18 @@
             }
         }
 
+
+        public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
+
         private Timer _timer;
 
         public MainViewModel()
         {
+            this.Errors = new ThreadSafeObservableCollection<ErrorViewModel>();
+
             this._style = WebSequenceDiagramsStyle.Default;
 
-            this._wsdScript = "title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-- > Client: return image";
+            this._wsdScript = "title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-> Client: return image";
             this.Refresh();
 
             this._timer = new Timer(1000);
@@ -83,7 +88,22 @@
 
         private void Refresh()
         {
-            this.WsdImage = WebSequenceDiagrams.GetDiagram(this._wsdScript, this._style.ToString().ToLower().Replace('_', '-'), "png");
+            try
+            {
+                this.Errors.Clear();
+                this.WsdImage = WebSequenceDiagrams.GetDiagram(this._wsdScript, this._style.ToString().ToLower().Replace('_', '-'), "png");
+            }
+            catch (WebSequenceDiagramsException ex)
+            {
+                foreach (var error in ex.Errors)
+                {
+                    this.Errors.Add(new ErrorViewModel(error.Line, error.Message));
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Errors.Add(new ErrorViewModel(0, ex.Message));
+            }
         }
     }
 }

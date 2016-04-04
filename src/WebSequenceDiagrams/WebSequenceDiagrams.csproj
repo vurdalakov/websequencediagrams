@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ErrorViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Vurdalakov\BooleanToObjectConverter.cs" />
     <Compile Include="Vurdalakov\BooleanToVisibilityConverter.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Vurdalakov\ViewModelBase.cs" />
     <Compile Include="Vurdalakov\WindowExtensions.cs" />
     <Compile Include="WebSequenceDiagrams.cs" />
+    <Compile Include="WebSequenceDiagramsException.cs" />
     <Compile Include="WebSequenceDiagramsStyle.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
