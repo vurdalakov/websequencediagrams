@@ -22,6 +22,36 @@
         public String ApplicationFullVersion { get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); } }
         public String ApplicationCopyright { get { return ((Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyCopyrightAttribute), false)) as AssemblyCopyrightAttribute).Copyright; } }
 
+        // custom AssemblyInfo.cs attributes
+        public String ApplicationRepositoryUrl { get { return GetCustomAttribute("AssemblyRepositoryUrl"); } }
+
+        private String GetCustomAttribute(String attributeName)
+        {
+            if (!attributeName.Contains("."))
+            {
+                attributeName = "System.Reflection." + attributeName;
+            }
+
+            var type = Type.GetType(attributeName);
+            if (type != null)
+            {
+                var attribute = Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), type, false);
+                if (attribute != null)
+                {
+                    var props = type.GetProperties();
+                    foreach (var prop in props)
+                    {
+                        if (prop.DeclaringType.FullName.Equals(attributeName)) // ignore inherited properties
+                        {
+                            return prop.GetValue(attribute, null) as String;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public ICommand OpenLinkCommand { get; private set; }
         private void OnOpenLinkCommand(String url)
         {
@@ -42,7 +72,7 @@
                 {
                     var parts = email.Split('|');
                     email = parts[0];
-                    subject = "?subject=" + parts[1];
+                    subject = "?subject=" + (String.IsNullOrEmpty(parts[1]) ? ApplicationTitleAndVersion : parts[1]);
                 }
                 const String prefix = "mailto:";
                 System.Diagnostics.Process.Start((email.StartsWith(prefix, StringComparison.CurrentCultureIgnoreCase) ? email : prefix + email) + subject);

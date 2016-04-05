@@ -6,5 +6,6 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <vurdalakov:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <vurdalakov:NullToHiddenConverter x:Key="NullToHiddenConverter" />
     </Application.Resources>
 </Application>

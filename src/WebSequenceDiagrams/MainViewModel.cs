@@ -156,8 +156,8 @@
         public ICommand AboutCommand { get; private set; }
         public void OnAboutCommand()
         {
-            //var aboutWindow = new AboutWindow(Application.Current.MainWindow);
-            //aboutWindow.ShowDialog();
+            var aboutWindow = new AboutWindow(Application.Current.MainWindow);
+            aboutWindow.ShowDialog();
         }
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)

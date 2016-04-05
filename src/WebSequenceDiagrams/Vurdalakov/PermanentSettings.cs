@@ -34,7 +34,7 @@
                         var type = Type.GetType(parts[1]);
                         if (null == type)
                         {
-                            type = Assembly.GetCallingAssembly().GetType(parts[1]);
+                            type = Assembly.GetExecutingAssembly().GetType(parts[1]);
                             if (null == type)
                             {
                                 continue;

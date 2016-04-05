@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Vurdalakov.WebSequenceDiagrams"
         xmlns:vurdalakov="clr-namespace:Vurdalakov"
         mc:Ignorable="d"
-        Title="WebSequenceDiagrams" Width="1024" Height="768">
+        Title="{Binding ApplicationTitleAndVersion}" Width="1024" Height="768">
 
     <Window.InputBindings>
         <KeyBinding Key="X" Modifiers="Alt" Command="{Binding ExitCommand}" />

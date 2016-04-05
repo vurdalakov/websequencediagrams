@@ -1,0 +1,29 @@
+﻿<Window x:Class="Vurdalakov.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
+        Title="About" Width="400" Height="250">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center">
+            <TextBlock Text="{Binding ApplicationTitle}" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,20,0,0" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                <TextBlock Text="Version" />
+                <TextBlock Text="{Binding ApplicationFullVersion}" Margin="4,0,0,0" />
+            </StackPanel>
+            <TextBlock Text="{Binding ApplicationCopyright}" HorizontalAlignment="Center" Margin="0,10,0,0" />
+            <TextBlock Margin="0,20,0,0" HorizontalAlignment="Center">
+                <Hyperlink Command="{Binding SendEmailCommand}" CommandParameter="vurdalakov@gmail.com|">vurdalakov@gmail.com</Hyperlink>
+            </TextBlock>
+            <TextBlock Margin="0,10,0,0" HorizontalAlignment="Center" Visibility="{Binding ApplicationRepositoryUrl,Converter={StaticResource NullToHiddenConverter}}">
+                <Hyperlink Command="{Binding OpenLinkCommand}" CommandParameter="{Binding ApplicationRepositoryUrl}">
+                    <TextBlock Text="{Binding ApplicationRepositoryUrl}"/>
+                </Hyperlink>
+            </TextBlock>
+            <Button Content="OK" Margin="0,30,0,0" Width="62" IsDefault="True" IsCancel="True" />
+        </StackPanel>
+
+    </Grid>
+</Window>

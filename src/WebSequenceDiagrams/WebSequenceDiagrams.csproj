@@ -63,8 +63,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Vurdalakov\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ErrorViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Vurdalakov\AssemblyInfoCustomAttributes.cs" />
     <Compile Include="Vurdalakov\BooleanToObjectConverter.cs" />
     <Compile Include="Vurdalakov\BooleanToVisibilityConverter.cs" />
     <Compile Include="Vurdalakov\CommandBase.cs" />
@@ -75,6 +79,7 @@
     <Compile Include="Vurdalakov\IntegerToObjectConverter.cs" />
     <Compile Include="Vurdalakov\NameValueTypeViewModel.cs" />
     <Compile Include="Vurdalakov\NameValueViewModel.cs" />
+    <Compile Include="Vurdalakov\NullToHiddenConverter.cs" />
     <Compile Include="Vurdalakov\PermanentSettings.cs" />
     <Compile Include="Vurdalakov\SetFocusBehavior.cs" />
     <Compile Include="Vurdalakov\TextBoxLineColumnBehavior.cs" />
@@ -86,6 +91,10 @@
     <Compile Include="WebSequenceDiagrams.cs" />
     <Compile Include="WebSequenceDiagramsException.cs" />
     <Compile Include="WebSequenceDiagramsStyle.cs" />
+    <Page Include="Vurdalakov\AboutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
