@@ -26,6 +26,8 @@
 
                     this._timer.Stop();
                     this._timer.Start();
+
+                    this.DirtyFlag = true;
                 }
             }
         }
@@ -202,12 +204,11 @@
             }
         }
 
-        private String _mainWindowTitle;
         public String MainWindowTitle
         {
             get
             {
-                return String.Format("{0} - {1}", this.ApplicationTitleAndVersion, null == this.FileName ? "<New File>" : Path.GetFileName(this.FileName));
+                return String.Format("{0} - {1} {2}", this.ApplicationTitleAndVersion, null == this.FileName ? "<New File>" : Path.GetFileName(this.FileName), this.DirtyFlag ? "*" : "");
             }
         }
 
@@ -224,6 +225,25 @@
                 {
                     this._fileName = value;
                     this.OnPropertyChanged(() => this.FileName);
+
+                    this.OnPropertyChanged(() => this.MainWindowTitle);
+                }
+            }
+        }
+
+        private Boolean _dirtyFlag = false;
+        public Boolean DirtyFlag
+        {
+            get
+            {
+                return this._dirtyFlag;
+            }
+            set
+            {
+                if (value != this._dirtyFlag)
+                {
+                    this._dirtyFlag = value;
+                    this.OnPropertyChanged(() => this.DirtyFlag);
 
                     this.OnPropertyChanged(() => this.MainWindowTitle);
                 }
@@ -270,6 +290,7 @@
             this.OnPropertyChanged(() => this.MainWindowTitle);
 
             SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-> Client: return image");
+            this.DirtyFlag = true;
         }
 
         public ICommand FileOpenCommand { get; private set; }
@@ -290,6 +311,7 @@
                 this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.FileName));
 
                 SetWsdScript(File.ReadAllText(this.FileName));
+                this.DirtyFlag = false;
             }
         }
 
@@ -297,6 +319,7 @@
         public void OnFileSaveCommand()
         {
             File.WriteAllText(_fileName, this.WsdScript);
+            this.DirtyFlag = false;
         }
 
         public ICommand FileSaveAsCommand { get; private set; }
@@ -317,6 +340,7 @@
                 this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.FileName));
 
                 File.WriteAllText(this.FileName, this.WsdScript);
+                this.DirtyFlag = false;
             }
         }
 
