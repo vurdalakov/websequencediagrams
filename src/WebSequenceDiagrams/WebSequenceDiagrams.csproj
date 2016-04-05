@@ -75,6 +75,7 @@
     <Compile Include="Vurdalakov\IntegerToObjectConverter.cs" />
     <Compile Include="Vurdalakov\NameValueTypeViewModel.cs" />
     <Compile Include="Vurdalakov\NameValueViewModel.cs" />
+    <Compile Include="Vurdalakov\PermanentSettings.cs" />
     <Compile Include="Vurdalakov\SetFocusBehavior.cs" />
     <Compile Include="Vurdalakov\TextBoxLineColumnBehavior.cs" />
     <Compile Include="Vurdalakov\TextBoxUpdateSourceBehavior.cs" />

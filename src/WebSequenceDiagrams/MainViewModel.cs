@@ -41,6 +41,7 @@
                     this._style = value;
                     this.OnPropertyChanged(() => this.Style);
 
+                    this._settings.Set("WsdStyle", this._style);
                     this.Refresh();
                 }
             }
@@ -116,15 +117,17 @@
 
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
 
+        private PermanentSettings _settings;
         private Timer _timer;
 
         public MainViewModel()
         {
+            this._settings = new PermanentSettings();
+            this._style = (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
+
             this.ErrorSelectedCommand = new CommandBase<Int32>(OnErrorSelectedCommand);
 
             this.Errors = new ThreadSafeObservableCollection<ErrorViewModel>();
-
-            this._style = WebSequenceDiagramsStyle.Default;
 
             this._wsdScript = "title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-> Client: return image";
             this.Refresh();
