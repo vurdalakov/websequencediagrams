@@ -2,6 +2,7 @@
 {
     using System;
     using System.Timers;
+    using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Imaging;
 
@@ -125,6 +126,10 @@
             this._settings = new PermanentSettings();
             this._style = (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
 
+            this.ExitCommand = new CommandBase(this.OnExitCommand);
+            this.RefreshCommand = new CommandBase(this.OnRefreshCommand);
+            this.AboutCommand = new CommandBase(this.OnAboutCommand);
+
             this.ErrorSelectedCommand = new CommandBase<Int32>(OnErrorSelectedCommand);
 
             this.Errors = new ThreadSafeObservableCollection<ErrorViewModel>();
@@ -134,6 +139,25 @@
 
             this._timer = new Timer(1000);
             this._timer.Elapsed += OnTimerElapsed;
+        }
+
+        public ICommand ExitCommand { get; private set; }
+        public void OnExitCommand()
+        {
+            Application.Current.MainWindow.Close();
+        }
+
+        public ICommand RefreshCommand { get; private set; }
+        public void OnRefreshCommand()
+        {
+            this.Refresh();
+        }
+
+        public ICommand AboutCommand { get; private set; }
+        public void OnAboutCommand()
+        {
+            //var aboutWindow = new AboutWindow(Application.Current.MainWindow);
+            //aboutWindow.ShowDialog();
         }
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)
