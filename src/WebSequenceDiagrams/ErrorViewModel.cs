@@ -4,12 +4,12 @@
 
     public class ErrorViewModel : ViewModelBase
     {
-        public Int32 Line { get; private set; }
+        public Int32 LineNumber { get; private set; }
         public String Message { get; private set; }
 
-        public ErrorViewModel(Int32 line, String message)
+        public ErrorViewModel(Int32 lineNumber, String message)
         {
-            this.Line = line;
+            this.LineNumber = lineNumber;
             this.Message = message;
         }
     }

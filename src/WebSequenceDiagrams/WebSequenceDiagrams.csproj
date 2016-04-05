@@ -69,10 +69,13 @@
     <Compile Include="Vurdalakov\BooleanToVisibilityConverter.cs" />
     <Compile Include="Vurdalakov\CommandBase.cs" />
     <Compile Include="Vurdalakov\CommandBaseGeneric.cs" />
+    <Compile Include="Vurdalakov\ControlLoadedBehavior.cs" />
     <Compile Include="Vurdalakov\EnumToBooleanConverter.cs" />
+    <Compile Include="Vurdalakov\FillLastColumnBehavior.cs" />
     <Compile Include="Vurdalakov\IntegerToObjectConverter.cs" />
     <Compile Include="Vurdalakov\NameValueTypeViewModel.cs" />
     <Compile Include="Vurdalakov\NameValueViewModel.cs" />
+    <Compile Include="Vurdalakov\SetFocusBehavior.cs" />
     <Compile Include="Vurdalakov\TextBoxLineColumnBehavior.cs" />
     <Compile Include="Vurdalakov\TextBoxUpdateSourceBehavior.cs" />
     <Compile Include="Vurdalakov\ThreadSafeObservableCollection.cs" />

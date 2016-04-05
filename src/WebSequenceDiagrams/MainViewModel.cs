@@ -2,6 +2,7 @@
 {
     using System;
     using System.Timers;
+    using System.Windows.Input;
     using System.Windows.Media.Imaging;
 
     public class MainViewModel : ViewModelBase
@@ -96,12 +97,31 @@
             }
         }
 
+        private Boolean _setFocusOnScript = false;
+        public Boolean SetFocusOnScript
+        {
+            get
+            {
+                return this._setFocusOnScript;
+            }
+            set
+            {
+                if (value != this._setFocusOnScript)
+                {
+                    this._setFocusOnScript = value;
+                    this.OnPropertyChanged(() => this.SetFocusOnScript);
+                }
+            }
+        }
+
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
 
         private Timer _timer;
 
         public MainViewModel()
         {
+            this.ErrorSelectedCommand = new CommandBase<Int32>(OnErrorSelectedCommand);
+
             this.Errors = new ThreadSafeObservableCollection<ErrorViewModel>();
 
             this._style = WebSequenceDiagramsStyle.Default;
@@ -137,6 +157,14 @@
             {
                 this.Errors.Add(new ErrorViewModel(0, ex.Message));
             }
+        }
+
+        public ICommand ErrorSelectedCommand { get; private set; }
+        private void OnErrorSelectedCommand(Int32 lineNumber)
+        {
+            this.LineNumber = lineNumber;
+            this.SetFocusOnScript = false;
+            this.SetFocusOnScript = true;
         }
     }
 }

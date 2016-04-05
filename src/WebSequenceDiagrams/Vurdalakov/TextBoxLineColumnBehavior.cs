@@ -8,8 +8,10 @@
     // <TextBox vurdalakov:TextBoxLineColumnBehavior.LineNumber="{Binding LineNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.ColumnNumber="{Binding ColumnNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.Attach="True" />
     public class TextBoxLineColumnBehavior : DependencyObject
     {
+        // LineNumber
+
         public static readonly DependencyProperty LineNumberProperty =
-            DependencyProperty.RegisterAttached("LineNumber", typeof(Int32), typeof(TextBoxLineColumnBehavior), new UIPropertyMetadata(-1));
+            DependencyProperty.RegisterAttached("LineNumber", typeof(Int32), typeof(TextBoxLineColumnBehavior), new UIPropertyMetadata(1, OnLineNumberChanged));
 
         public static Int32 GetLineNumber(DependencyObject dependencyObject)
         {
@@ -21,8 +23,20 @@
             dependencyObject.SetValue(LineNumberProperty, value);
         }
 
+        private static void OnLineNumberChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            var textBox = dependencyObject as TextBox;
+
+            if (textBox != null)
+            {
+                textBox.CaretIndex = textBox.GetCharacterIndexFromLineIndex(GetLineNumber(dependencyObject) - 1);
+            }
+        }
+
+        // ColumnNumber
+
         public static readonly DependencyProperty ColumnNumberProperty =
-            DependencyProperty.RegisterAttached("ColumnNumber", typeof(Int32), typeof(TextBoxLineColumnBehavior), new UIPropertyMetadata(-1));
+            DependencyProperty.RegisterAttached("ColumnNumber", typeof(Int32), typeof(TextBoxLineColumnBehavior), new UIPropertyMetadata(1, OnColumnNumberChanged));
 
         public static Int32 GetColumnNumber(DependencyObject dependencyObject)
         {
@@ -33,6 +47,18 @@
         {
             dependencyObject.SetValue(ColumnNumberProperty, value);
         }
+
+        private static void OnColumnNumberChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            var textBox = dependencyObject as TextBox;
+
+            if (textBox != null)
+            {
+                textBox.CaretIndex = textBox.GetCharacterIndexFromLineIndex(GetLineNumber(dependencyObject) - 1) + GetColumnNumber(dependencyObject) - 1;
+            }
+        }
+
+        // Attach
 
         public static readonly DependencyProperty AttachProperty =
             DependencyProperty.RegisterAttached("Attach", typeof(Boolean), typeof(TextBoxLineColumnBehavior), new UIPropertyMetadata(false, OnAttachChanged));
@@ -47,9 +73,9 @@
             dependencyObject.SetValue(AttachProperty, value);
         }
 
-        private static void OnAttachChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnAttachChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = sender as TextBox;
+            var textBox = dependencyObject as TextBox;
 
             if (textBox != null)
             {
