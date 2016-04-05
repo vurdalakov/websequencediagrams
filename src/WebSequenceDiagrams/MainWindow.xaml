@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Vurdalakov.WebSequenceDiagrams"
         xmlns:vurdalakov="clr-namespace:Vurdalakov"
         mc:Ignorable="d"
-        Title="{Binding ApplicationTitleAndVersion}" Width="1024" Height="768">
+        Title="{Binding ApplicationTitleAndVersion}"
+        Left="{Binding MainWindowLeft, Mode=TwoWay, FallbackValue=-200}" Top="{Binding MainWindowTop, Mode=TwoWay, FallbackValue=-200}"
+        Width="{Binding MainWindowWidth, Mode=TwoWay, FallbackValue=1}" Height="{Binding MainWindowHeight, Mode=TwoWay, FallbackValue=1}">
 
     <Window.InputBindings>
         <KeyBinding Key="X" Modifiers="Alt" Command="{Binding ExitCommand}" />
