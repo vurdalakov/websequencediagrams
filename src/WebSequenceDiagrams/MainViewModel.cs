@@ -1,10 +1,12 @@
 ﻿namespace Vurdalakov.WebSequenceDiagrams
 {
     using System;
+    using System.IO;
     using System.Timers;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Imaging;
+    using Microsoft.Win32;
 
     public class MainViewModel : ViewModelBase
     {
@@ -26,6 +28,14 @@
                     this._timer.Start();
                 }
             }
+        }
+
+        private void SetWsdScript(String wsdScript)
+        {
+            this._wsdScript = wsdScript;
+            this.OnPropertyChanged(() => this.WsdScript);
+
+            this.Refresh();
         }
 
         private WebSequenceDiagramsStyle _style;
@@ -192,6 +202,34 @@
             }
         }
 
+        private String _mainWindowTitle;
+        public String MainWindowTitle
+        {
+            get
+            {
+                return String.Format("{0} - {1}", this.ApplicationTitleAndVersion, null == this.FileName ? "<New File>" : Path.GetFileName(this.FileName));
+            }
+        }
+
+        private String _fileName;
+        public String FileName
+        {
+            get
+            {
+                return this._fileName;
+            }
+            set
+            {
+                if (value != this._fileName)
+                {
+                    this._fileName = value;
+                    this.OnPropertyChanged(() => this.FileName);
+
+                    this.OnPropertyChanged(() => this.MainWindowTitle);
+                }
+            }
+        }
+
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
 
         private PermanentSettings _settings;
@@ -202,6 +240,10 @@
             this._settings = new PermanentSettings();
             this._style = (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
 
+            this.FileNewCommand = new CommandBase(this.OnFileNewCommand);
+            this.FileOpenCommand = new CommandBase(this.OnFileOpenCommand);
+            this.FileSaveCommand = new CommandBase(this.OnFileSaveCommand);
+            this.FileSaveAsCommand = new CommandBase(this.OnFileSaveAsCommand);
             this.ExitCommand = new CommandBase(this.OnExitCommand);
             this.RefreshCommand = new CommandBase(this.OnRefreshCommand);
             this.AboutCommand = new CommandBase(this.OnAboutCommand);
@@ -218,8 +260,64 @@
             this.MainWindowWidth = this._settings.Get("MainWindowWidth", 1024);
             this.MainWindowHeight = this._settings.Get("MainWindowHeight", 768);
 
-            this._wsdScript = "title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-> Client: return image";
-            this.Refresh();
+            this.FileNewCommand.Execute(null);
+        }
+
+        public ICommand FileNewCommand { get; private set; }
+        public void OnFileNewCommand()
+        {
+            this.FileName = null;
+            this.OnPropertyChanged(() => this.MainWindowTitle);
+
+            SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-> Client: return image");
+        }
+
+        public ICommand FileOpenCommand { get; private set; }
+        public void OnFileOpenCommand()
+        {
+            var dlg = new OpenFileDialog();
+            dlg.AddExtension = true;
+            dlg.CheckFileExists = true;
+            dlg.CheckPathExists = true;
+            dlg.DefaultExt = ".wsd";
+            dlg.Filter = "WSD Files (*.wsd)|*.wsd|All Files (*.*)|*.*";
+            dlg.InitialDirectory = this._settings.Get("CurrentDirectory", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+
+            if ((Boolean)dlg.ShowDialog())
+            {
+                this.FileName = dlg.FileName;
+
+                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.FileName));
+
+                SetWsdScript(File.ReadAllText(this.FileName));
+            }
+        }
+
+        public ICommand FileSaveCommand { get; private set; }
+        public void OnFileSaveCommand()
+        {
+            File.WriteAllText(_fileName, this.WsdScript);
+        }
+
+        public ICommand FileSaveAsCommand { get; private set; }
+        public void OnFileSaveAsCommand()
+        {
+            var dlg = new SaveFileDialog();
+            dlg.AddExtension = true;
+            dlg.CheckPathExists = true;
+            dlg.DefaultExt = ".wsd";
+            dlg.Filter = "WSD Files (*.wsd)|*.wsd|All Files (*.*)|*.*";
+            dlg.InitialDirectory = this._settings.Get("CurrentDirectory", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+            dlg.OverwritePrompt = true;
+
+            if ((Boolean)dlg.ShowDialog())
+            {
+                this.FileName = dlg.FileName;
+
+                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.FileName));
+
+                File.WriteAllText(this.FileName, this.WsdScript);
+            }
         }
 
         public ICommand ExitCommand { get; private set; }

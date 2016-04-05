@@ -6,11 +6,14 @@
         xmlns:local="clr-namespace:Vurdalakov.WebSequenceDiagrams"
         xmlns:vurdalakov="clr-namespace:Vurdalakov"
         mc:Ignorable="d"
-        Title="{Binding ApplicationTitleAndVersion}"
+        Title="{Binding MainWindowTitle}"
         Left="{Binding MainWindowLeft, Mode=TwoWay, FallbackValue=-200}" Top="{Binding MainWindowTop, Mode=TwoWay, FallbackValue=-200}"
         Width="{Binding MainWindowWidth, Mode=TwoWay, FallbackValue=1}" Height="{Binding MainWindowHeight, Mode=TwoWay, FallbackValue=1}">
 
     <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding FileNewCommand}" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding FileOpenCommand}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding FileSaveCommand}" />
         <KeyBinding Key="X" Modifiers="Alt" Command="{Binding ExitCommand}" />
         <KeyBinding Key="F5" Modifiers="" Command="{Binding RefreshCommand}" />
     </Window.InputBindings>
@@ -33,6 +36,12 @@
         <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
             <Menu ToolBar.OverflowMode="Never">
                 <MenuItem Header="_File">
+                    <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding FileNewCommand}" />
+                    <MenuItem Header="_Open..." InputGestureText="Ctrl+O" Command="{Binding FileOpenCommand}" />
+                    <Separator />
+                    <MenuItem Header="Save" InputGestureText="Ctrl+S" Command="{Binding FileSaveCommand}" />
+                    <MenuItem Header="Save _As..." Command="{Binding FileSaveAsCommand}" />
+                    <Separator />
                     <MenuItem Header="E_xit" InputGestureText="Alt+X" Command="{Binding ExitCommand}" />
                 </MenuItem>
                 <MenuItem Header="_View">
