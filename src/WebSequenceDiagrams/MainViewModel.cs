@@ -423,12 +423,17 @@
             this.Refresh();
         }
 
+        private WebSequenceDiagramsResult _webSequenceDiagramsResult;
+
         private void Refresh()
         {
             try
             {
                 this.Errors.Clear();
-                this.WsdImage = WebSequenceDiagrams.GetDiagram(this._wsdScript, this._style.ToString().ToLower().Replace('_', '-'), "png");
+
+                this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this._style.ToString().ToLower().Replace('_', '-'), "png");
+
+                this.WsdImage = this._webSequenceDiagramsResult.GetBitmapImage();
             }
             catch (WebSequenceDiagramsException ex)
             {

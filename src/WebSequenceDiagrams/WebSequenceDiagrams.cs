@@ -2,10 +2,8 @@
 {
     using System;
     using System.Collections.Specialized;
-    using System.IO;
     using System.Net;
     using System.Text;
-    using System.Windows.Media.Imaging;
     using Newtonsoft.Json.Linq;
 
     public static class WebSequenceDiagrams
@@ -15,24 +13,7 @@
             ServicePointManager.Expect100Continue = false;
         }
 
-        public static BitmapImage GetDiagram(String wsdScript, String style, String format)
-        {
-            var bitmapData = DownloadDiagram(wsdScript, style, format);
-
-            var bitmap = new BitmapImage();
-            using (var stream = new MemoryStream(bitmapData))
-            {
-                bitmap.BeginInit();
-                bitmap.StreamSource = stream;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                bitmap.Freeze();
-            }
-
-            return bitmap;
-        }
-
-        private static Byte[] DownloadDiagram(String wsdScript, String style, String format)
+        public static WebSequenceDiagramsResult DownloadDiagram(String wsdScript, String style, String format)
         {
             var requestData = new NameValueCollection();
             requestData.Add("apiVersion", "1");
@@ -51,7 +32,9 @@
 
             var img = root.GetValue("img");
 
-            return webClient.DownloadData("http://www.websequencediagrams.com/" + img);
+            var imageData = webClient.DownloadData("http://www.websequencediagrams.com/" + img);
+
+            return new WebSequenceDiagramsResult(imageData);
         }
     }
 }
