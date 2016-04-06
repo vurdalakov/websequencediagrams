@@ -8,12 +8,12 @@
     {
         public Byte[] ImageData { get; private set; }
 
-        public Int32 ImageWidth { get; private set; }
-        public Int32 ImageHeight { get; private set; }
+        public Int32 ActualImageWidth { get; private set; }
 
-        public WebSequenceDiagramsResult(Byte[] imageData)
+        public WebSequenceDiagramsResult(Byte[] imageData, Int32 actualImageWidth)
         {
             this.ImageData = imageData;
+            this.ActualImageWidth = actualImageWidth;
         }
 
         public BitmapImage GetBitmapImage()

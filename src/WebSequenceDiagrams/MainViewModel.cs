@@ -60,22 +60,8 @@
             }
         }
 
-        private BitmapImage _wsdImage;
-        public BitmapImage WsdImage
-        {
-            get
-            {
-                return this._wsdImage;
-            }
-            set
-            {
-                if (value != this._wsdImage)
-                {
-                    this._wsdImage = value;
-                    this.OnPropertyChanged(() => this.WsdImage);
-                }
-            }
-        }
+        public BitmapImage WsdImage { get; private set; }
+        public Int32 WsdImageWidth { get; private set; }
 
         private Int32 _lineNumber = 1;
         public Int32 LineNumber
@@ -464,6 +450,10 @@
                 this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this._style.ToString().ToLower().Replace('_', '-'), "png");
 
                 this.WsdImage = this._webSequenceDiagramsResult.GetBitmapImage();
+                this.OnPropertyChanged(() => this.WsdImage);
+
+                this.WsdImageWidth = this._webSequenceDiagramsResult.ActualImageWidth;
+                this.OnPropertyChanged(() => this.WsdImageWidth);
             }
             catch (WebSequenceDiagramsException ex)
             {

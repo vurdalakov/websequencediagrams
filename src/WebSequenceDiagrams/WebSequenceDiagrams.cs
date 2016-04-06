@@ -30,11 +30,13 @@
 
             WebSequenceDiagramsException.CheckResult(root);
 
+            var actualImageWidth = (Int32)root.GetValue("actualWidth");
+
             var img = root.GetValue("img");
 
             var imageData = webClient.DownloadData("http://www.websequencediagrams.com/" + img);
 
-            return new WebSequenceDiagramsResult(imageData);
+            return new WebSequenceDiagramsResult(imageData, actualImageWidth);
         }
     }
 }

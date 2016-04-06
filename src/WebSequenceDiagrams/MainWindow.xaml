@@ -100,7 +100,7 @@
 
         <TextBox Grid.Row="2" Grid.Column="0" AcceptsReturn="True" AcceptsTab="True" Text="{Binding WsdScript, Mode=TwoWay}" vurdalakov:TextBoxUpdateSourceBehavior.UpdateSourceOnChange="True" vurdalakov:TextBoxLineColumnBehavior.LineNumber="{Binding LineNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.ColumnNumber="{Binding ColumnNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.Attach="True" vurdalakov:ControlLoadedBehavior.SetFocus="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" />
 
-        <Image Grid.Row="2" Grid.Column="1" Source="{Binding WsdImage}" />
+        <Image Grid.Row="2" Grid.Column="1" Source="{Binding WsdImage}" Width="{Binding WsdImageWidth}" />
 
         <ListView Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" vurdalakov:FillLastColumnBehavior.Attach="True">
             <ListView.Resources>
