@@ -64,6 +64,9 @@
                     <Separator />
                     <MenuItem Header="E_xit" InputGestureText="Alt+X" Command="{Binding ExitCommand}" />
                 </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="Extract _Participants" Command="{Binding EditExtractParticipantsCommand}" />
+                </MenuItem>
                 <MenuItem Header="_View">
                     <MenuItem Header="Real _Size" InputGestureText="Ctrl+0" Command="{Binding ViewZoom100Command}" />
                     <MenuItem Header="Zoom _In" InputGestureText="Ctrl++" Command="{Binding ViewZoomInCommand}" />
