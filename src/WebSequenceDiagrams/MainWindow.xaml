@@ -159,15 +159,18 @@
 
         <StatusBar Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
             <StatusBarItem>
-                <StackPanel Orientation="Horizontal">
-                </StackPanel>
-            </StatusBarItem>
-            <StatusBarItem HorizontalAlignment="Right">
                 <TextBlock>
                         <Run Text="Ln" />
                         <Run Text="{Binding LineNumber}" />
                         <Run Text="Col" />
                         <Run Text="{Binding ColumnNumber}" />
+                </TextBlock>
+            </StatusBarItem>
+            <Separator Width="1" />
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock>
+                    <Run Text="{Binding Zoom}" />
+                    <Run Text="%" />
                 </TextBlock>
             </StatusBarItem>
         </StatusBar>
