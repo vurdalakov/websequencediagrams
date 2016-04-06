@@ -10,6 +10,11 @@
 
     public static class WebSequenceDiagrams
     {
+        static WebSequenceDiagrams()
+        {
+            ServicePointManager.Expect100Continue = false;
+        }
+
         public static BitmapImage GetDiagram(String wsdScript, String style, String format)
         {
             var bitmapData = DownloadDiagram(wsdScript, style, format);
@@ -29,8 +34,6 @@
 
         private static Byte[] DownloadDiagram(String wsdScript, String style, String format)
         {
-            ServicePointManager.Expect100Continue = false;
-
             var requestData = new NameValueCollection();
             requestData.Add("apiVersion", "1");
             requestData.Add("style", style);

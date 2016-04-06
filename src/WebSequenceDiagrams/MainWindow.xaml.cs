@@ -9,7 +9,11 @@
         {
             InitializeComponent();
 
-            //this.Loaded += (s, e) => { this.DataContext = new MainViewModel(); };
+            // TODO:
+            //this._mainViewModel = new MainViewModel();
+            //this.DataContext = this._mainViewModel;
+            //this.Loaded += (s, e) => this._mainViewModel.OnMainWindowLoaded();
+
             this.Loaded += OnMainWindowLoaded;
             this.Closing += (s, e) => e.Cancel = this._mainViewModel.OnMainWindowClosing();
         }
