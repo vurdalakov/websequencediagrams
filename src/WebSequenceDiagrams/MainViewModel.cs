@@ -206,7 +206,7 @@
 
         private String GetFileTitle()
         {
-            return null == this.FileName ? "<New File>" : Path.GetFileName(this.FileName);
+            return null == this.ScriptFilePath ? "<New File>" : Path.GetFileName(this.ScriptFilePath);
         }
 
         public String MainWindowTitle
@@ -217,19 +217,24 @@
             }
         }
 
-        private String _fileName;
-        public String FileName
+        public String ScriptFileName { get; private set; }
+
+        private String _scriptFilePath;
+        public String ScriptFilePath
         {
             get
             {
-                return this._fileName;
+                return this._scriptFilePath;
             }
             set
             {
-                if (value != this._fileName)
+                if (value != this._scriptFilePath)
                 {
-                    this._fileName = value;
-                    this.OnPropertyChanged(() => this.FileName);
+                    this._scriptFilePath = value;
+                    this.OnPropertyChanged(() => this.ScriptFilePath);
+
+                    this.ScriptFileName = Path.GetFileName(this._scriptFilePath);
+                    this.OnPropertyChanged(() => this.ScriptFileName);
 
                     this.OnPropertyChanged(() => this.MainWindowTitle);
                 }
@@ -302,10 +307,10 @@
                 return;
             }
 
-            this.FileName = null;
+            this.ScriptFilePath = null;
             this.OnPropertyChanged(() => this.MainWindowTitle);
 
-            SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-> Client: return image");
+            SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: send request\r\nServer-> Client: return response");
         }
 
         public ICommand FileOpenCommand { get; private set; }
@@ -326,11 +331,11 @@
 
             if ((Boolean)dlg.ShowDialog())
             {
-                this.FileName = dlg.FileName;
+                this.ScriptFilePath = dlg.FileName;
 
-                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.FileName));
+                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
 
-                SetWsdScript(File.ReadAllText(this.FileName));
+                SetWsdScript(File.ReadAllText(this.ScriptFilePath));
                 this.DirtyFlag = false;
             }
         }
@@ -338,7 +343,7 @@
         public ICommand FileSaveCommand { get; private set; }
         public void OnFileSaveCommand()
         {
-            File.WriteAllText(_fileName, this.WsdScript);
+            File.WriteAllText(_scriptFilePath, this.WsdScript);
             this.DirtyFlag = false;
         }
 
@@ -360,11 +365,11 @@
 
             if ((Boolean)dlg.ShowDialog())
             {
-                this.FileName = dlg.FileName;
+                this.ScriptFilePath = dlg.FileName;
 
-                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.FileName));
+                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
 
-                File.WriteAllText(this.FileName, this.WsdScript);
+                File.WriteAllText(this.ScriptFilePath, this.WsdScript);
                 this.DirtyFlag = false;
 
                 return true;
@@ -388,7 +393,7 @@
                     return false;
             }
 
-            if (null == this.FileName)
+            if (null == this.ScriptFilePath)
             {
                 return SaveFileAs();
             }

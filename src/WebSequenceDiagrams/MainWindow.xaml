@@ -39,8 +39,23 @@
                     <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding FileNewCommand}" />
                     <MenuItem Header="_Open..." InputGestureText="Ctrl+O" Command="{Binding FileOpenCommand}" />
                     <Separator />
-                    <MenuItem Header="Save" InputGestureText="Ctrl+S" Command="{Binding FileSaveCommand}" />
-                    <MenuItem Header="Save _As..." Command="{Binding FileSaveAsCommand}" />
+                    <MenuItem InputGestureText="Ctrl+S" Command="{Binding FileSaveCommand}">
+                        <MenuItem.Header>
+                            <TextBlock>
+                                <Run Text="Save"/>
+                                <Run Text="{Binding ScriptFileName, Mode=OneWay}"/>
+                            </TextBlock>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Command="{Binding FileSaveAsCommand}">
+                        <MenuItem.Header>
+                            <TextBlock>
+                                <Run Text="Save"/>
+                                <Run Text="{Binding ScriptFileName, Mode=OneWay}"/>
+                                <Run Text="As..."/>
+                            </TextBlock>
+                        </MenuItem.Header>
+                    </MenuItem>
                     <Separator />
                     <MenuItem Header="Save Image As..." Command="{Binding FileSaveImageAsCommand}" />
                     <Separator />
