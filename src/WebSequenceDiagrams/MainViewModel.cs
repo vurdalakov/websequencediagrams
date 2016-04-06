@@ -269,6 +269,7 @@
             this.FileOpenCommand = new CommandBase(this.OnFileOpenCommand);
             this.FileSaveCommand = new CommandBase(this.OnFileSaveCommand);
             this.FileSaveAsCommand = new CommandBase(this.OnFileSaveAsCommand);
+            this.FileSaveImageAsCommand = new CommandBase(this.OnFileSaveImageAsCommand);
             this.ExitCommand = new CommandBase(this.OnExitCommand);
             this.RefreshCommand = new CommandBase(this.OnRefreshCommand);
             this.AboutCommand = new CommandBase(this.OnAboutCommand);
@@ -353,7 +354,7 @@
             dlg.AddExtension = true;
             dlg.CheckPathExists = true;
             dlg.DefaultExt = ".wsd";
-            dlg.Filter = "WSD Files (*.wsd)|*.wsd|All Files (*.*)|*.*";
+            dlg.Filter = "WSD Files (*.wsd)|*.wsd";
             dlg.InitialDirectory = this._settings.Get("CurrentDirectory", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
             dlg.OverwritePrompt = true;
 
@@ -395,6 +396,27 @@
             {
                 this.FileSaveCommand.Execute(null);
                 return true;
+            }
+        }
+
+        
+        public ICommand FileSaveImageAsCommand { get; private set; }
+        public void OnFileSaveImageAsCommand()
+        {
+            var dlg = new SaveFileDialog();
+            dlg.AddExtension = true;
+            dlg.CheckPathExists = true;
+            dlg.Filter = "Windows Bitmap (*.bmp)|*.bmp|Graphics Interchange Format (*.gif)|*.gif|JPEG / JFIF (*.jpg)|*.jpg|Portable Network Graphics (*.png)|*.png|Tagged Image File Format (*.tiff)|*.tiff";
+            dlg.FilterIndex = this._settings.Get("FileSaveImageAsFilterIndex", 3);
+            dlg.InitialDirectory = this._settings.Get("CurrentDirectory", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+            dlg.OverwritePrompt = true;
+
+            if ((Boolean)dlg.ShowDialog())
+            {
+                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(dlg.FileName));
+                this._settings.Set("FileSaveImageAsFilterIndex", dlg.FilterIndex);
+
+                this._webSequenceDiagramsResult.SaveImage(dlg.FileName, dlg.FilterIndex);
             }
         }
 

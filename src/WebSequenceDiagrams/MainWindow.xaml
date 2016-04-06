@@ -42,6 +42,8 @@
                     <MenuItem Header="Save" InputGestureText="Ctrl+S" Command="{Binding FileSaveCommand}" />
                     <MenuItem Header="Save _As..." Command="{Binding FileSaveAsCommand}" />
                     <Separator />
+                    <MenuItem Header="Save Image As..." Command="{Binding FileSaveImageAsCommand}" />
+                    <Separator />
                     <MenuItem Header="E_xit" InputGestureText="Alt+X" Command="{Binding ExitCommand}" />
                 </MenuItem>
                 <MenuItem Header="_View">
