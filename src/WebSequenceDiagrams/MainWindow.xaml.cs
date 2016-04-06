@@ -11,6 +11,7 @@
 
             //this.Loaded += (s, e) => { this.DataContext = new MainViewModel(); };
             this.Loaded += OnMainWindowLoaded;
+            this.Closing += (s, e) => e.Cancel = this._mainViewModel.OnMainWindowClosing();
         }
 
         private MainViewModel _mainViewModel;

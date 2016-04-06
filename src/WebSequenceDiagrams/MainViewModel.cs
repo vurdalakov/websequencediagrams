@@ -204,11 +204,16 @@
             }
         }
 
+        private String GetFileTitle()
+        {
+            return null == this.FileName ? "<New File>" : Path.GetFileName(this.FileName);
+        }
+
         public String MainWindowTitle
         {
             get
             {
-                return String.Format("{0} - {1} {2}", this.ApplicationTitleAndVersion, null == this.FileName ? "<New File>" : Path.GetFileName(this.FileName), this.DirtyFlag ? "*" : "");
+                return String.Format("{0} - {1} {2}", this.ApplicationTitleAndVersion, this.GetFileTitle(), this.DirtyFlag ? "*" : "");
             }
         }
 
@@ -283,19 +288,33 @@
             this.FileNewCommand.Execute(null);
         }
 
+        public Boolean OnMainWindowClosing()
+        {
+            return !ConfirmSave();
+        }
+
         public ICommand FileNewCommand { get; private set; }
         public void OnFileNewCommand()
         {
+            if (!ConfirmSave())
+            {
+                return;
+            }
+
             this.FileName = null;
             this.OnPropertyChanged(() => this.MainWindowTitle);
 
             SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: request image\r\nServer-> Client: return image");
-            this.DirtyFlag = true;
         }
 
         public ICommand FileOpenCommand { get; private set; }
         public void OnFileOpenCommand()
         {
+            if (!ConfirmSave())
+            {
+                return;
+            }
+
             var dlg = new OpenFileDialog();
             dlg.AddExtension = true;
             dlg.CheckFileExists = true;
@@ -325,6 +344,11 @@
         public ICommand FileSaveAsCommand { get; private set; }
         public void OnFileSaveAsCommand()
         {
+            SaveFileAs();
+        }
+
+        public Boolean SaveFileAs()
+        {
             var dlg = new SaveFileDialog();
             dlg.AddExtension = true;
             dlg.CheckPathExists = true;
@@ -341,6 +365,36 @@
 
                 File.WriteAllText(this.FileName, this.WsdScript);
                 this.DirtyFlag = false;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private Boolean ConfirmSave()
+        {
+            if (!this.DirtyFlag)
+            {
+                return true;
+            }
+
+            switch (MessageBox.Show(Application.Current.MainWindow, String.Format("Save file {0}?", this.GetFileTitle()), "Save", MessageBoxButton.YesNoCancel, MessageBoxImage.Question))
+            {
+                case MessageBoxResult.No:
+                    return true;
+                case MessageBoxResult.Cancel:
+                    return false;
+            }
+
+            if (null == this.FileName)
+            {
+                return SaveFileAs();
+            }
+            else
+            {
+                this.FileSaveCommand.Execute(null);
+                return true;
             }
         }
 
