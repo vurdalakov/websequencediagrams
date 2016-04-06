@@ -60,9 +60,6 @@
             }
         }
 
-        public BitmapImage WsdImage { get; private set; }
-        public Int32 WsdImageWidth { get; private set; }
-
         private Int32 _lineNumber = 1;
         public Int32 LineNumber
         {
@@ -246,6 +243,54 @@
             }
         }
 
+        public BitmapImage WsdImage { get; private set; }
+
+        private Int32 _actualWsdImageWidth;
+        public Int32 ActualWsdImageWidth
+        {
+            get
+            {
+                return this._actualWsdImageWidth;
+            }
+            set
+            {
+                if (value != this._actualWsdImageWidth)
+                {
+                    this._actualWsdImageWidth = value;
+                    this.OnPropertyChanged(() => this.ActualWsdImageWidth);
+
+                    this.OnPropertyChanged(() => this.WsdImageWidth);
+                }
+            }
+        }
+
+        public Int32 WsdImageWidth
+        {
+            get
+            {
+                return Convert.ToInt32((float)this.ActualWsdImageWidth * this.Zoom / 100.0);
+            }
+        }
+
+        private Int32 _zoom = 100;
+        public Int32 Zoom
+        {
+            get
+            {
+                return this._zoom;
+            }
+            set
+            {
+                if (value != this._zoom)
+                {
+                    this._zoom = value;
+                    this.OnPropertyChanged(() => this.Zoom);
+
+                    this.OnPropertyChanged(() => this.WsdImageWidth);
+                }
+            }
+        }
+
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
 
         private PermanentSettings _settings;
@@ -262,6 +307,9 @@
             this.FileSaveAsCommand = new CommandBase(this.OnFileSaveAsCommand);
             this.FileSaveImageAsCommand = new CommandBase(this.OnFileSaveImageAsCommand);
             this.ExitCommand = new CommandBase(this.OnExitCommand);
+            this.ViewZoom100Command = new CommandBase(this.OnViewZoom100Command);
+            this.ViewZoomInCommand = new CommandBase(this.OnViewZoomInCommand);
+            this.ViewZoomOutCommand = new CommandBase(this.OnViewZoomOutCommand);
             this.RefreshCommand = new CommandBase(this.OnRefreshCommand);
             this.AboutCommand = new CommandBase(this.OnAboutCommand);
 
@@ -420,6 +468,30 @@
             Application.Current.MainWindow.Close();
         }
 
+        public ICommand ViewZoom100Command { get; private set; }
+        public void OnViewZoom100Command()
+        {
+            this.Zoom = 100;
+        }
+
+        public ICommand ViewZoomInCommand { get; private set; }
+        public void OnViewZoomInCommand()
+        {
+            if (this.Zoom < 800)
+            {
+                this.Zoom *= 2;
+            }
+        }
+
+        public ICommand ViewZoomOutCommand { get; private set; }
+        public void OnViewZoomOutCommand()
+        {
+            if (this.Zoom > 25)
+            {
+                this.Zoom /= 2;
+            }
+        }
+
         public ICommand RefreshCommand { get; private set; }
         public void OnRefreshCommand()
         {
@@ -452,8 +524,7 @@
                 this.WsdImage = this._webSequenceDiagramsResult.GetBitmapImage();
                 this.OnPropertyChanged(() => this.WsdImage);
 
-                this.WsdImageWidth = this._webSequenceDiagramsResult.ActualImageWidth;
-                this.OnPropertyChanged(() => this.WsdImageWidth);
+                this.ActualWsdImageWidth = this._webSequenceDiagramsResult.ActualImageWidth;
             }
             catch (WebSequenceDiagramsException ex)
             {

@@ -15,6 +15,9 @@
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding FileOpenCommand}" />
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding FileSaveCommand}" />
         <KeyBinding Key="X" Modifiers="Alt" Command="{Binding ExitCommand}" />
+        <KeyBinding Key="Home" Modifiers="Ctrl" Command="{Binding ViewZoom100Command}" />
+        <KeyBinding Key="PageUp" Modifiers="Ctrl" Command="{Binding ViewZoomInCommand}" />
+        <KeyBinding Key="PageDown" Modifiers="Ctrl" Command="{Binding ViewZoomOutCommand}" />
         <KeyBinding Key="F5" Modifiers="" Command="{Binding RefreshCommand}" />
     </Window.InputBindings>
     
@@ -62,6 +65,10 @@
                     <MenuItem Header="E_xit" InputGestureText="Alt+X" Command="{Binding ExitCommand}" />
                 </MenuItem>
                 <MenuItem Header="_View">
+                    <MenuItem Header="Real _Size" InputGestureText="Ctrl+Home" Command="{Binding ViewZoom100Command}" />
+                    <MenuItem Header="Zoom _In" InputGestureText="Ctrl+PgUp" Command="{Binding ViewZoomInCommand}" />
+                    <MenuItem Header="Zoom _Out" InputGestureText="Ctrl+PgDn" Command="{Binding ViewZoomOutCommand}" />
+                    <Separator />
                     <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding RefreshCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Style">
