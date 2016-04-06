@@ -343,8 +343,11 @@
         public ICommand FileSaveCommand { get; private set; }
         public void OnFileSaveCommand()
         {
-            File.WriteAllText(_scriptFilePath, this.WsdScript);
-            this.DirtyFlag = false;
+            if (this._scriptFilePath != null)
+            {
+                File.WriteAllText(_scriptFilePath, this.WsdScript);
+                this.DirtyFlag = false;
+            }
         }
 
         public ICommand FileSaveAsCommand { get; private set; }

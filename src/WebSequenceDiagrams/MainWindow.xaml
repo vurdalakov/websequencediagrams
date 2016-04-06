@@ -39,7 +39,7 @@
                     <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding FileNewCommand}" />
                     <MenuItem Header="_Open..." InputGestureText="Ctrl+O" Command="{Binding FileOpenCommand}" />
                     <Separator />
-                    <MenuItem InputGestureText="Ctrl+S" Command="{Binding FileSaveCommand}">
+                    <MenuItem InputGestureText="Ctrl+S" Command="{Binding FileSaveCommand}" IsEnabled="{Binding ScriptFilePath, Converter={StaticResource NullToFalseConverter}}">
                         <MenuItem.Header>
                             <TextBlock>
                                 <Run Text="Save"/>
@@ -65,17 +65,17 @@
                     <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding RefreshCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Style">
-                    <MenuItem Header="default" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=TwoWay}" />
-                    <MenuItem Header="earth" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Earth, Mode=TwoWay}" />
-                    <MenuItem Header="magazine" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Magazine, Mode=TwoWay}" />
-                    <MenuItem Header="modern-blue" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Modern_Blue, Mode=TwoWay}" />
-                    <MenuItem Header="mscgen" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Mscgen, Mode=TwoWay}" />
-                    <MenuItem Header="napkin" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Napkin, Mode=TwoWay}" />
-                    <MenuItem Header="omegapple" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Omegapple, Mode=TwoWay}" />
-                    <MenuItem Header="patent" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Patent, Mode=TwoWay}" />
-                    <MenuItem Header="qsd" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Qsd, Mode=TwoWay}" />
-                    <MenuItem Header="rose" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Rose, Mode=TwoWay}" />
-                    <MenuItem Header="roundgreen" IsCheckable="True" IsChecked="{Binding Path=Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Roundgreen, Mode=TwoWay}" />
+                    <MenuItem Header="default" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=TwoWay}" />
+                    <MenuItem Header="earth" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Earth, Mode=TwoWay}" />
+                    <MenuItem Header="magazine" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Magazine, Mode=TwoWay}" />
+                    <MenuItem Header="modern-blue" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Modern_Blue, Mode=TwoWay}" />
+                    <MenuItem Header="mscgen" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Mscgen, Mode=TwoWay}" />
+                    <MenuItem Header="napkin" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Napkin, Mode=TwoWay}" />
+                    <MenuItem Header="omegapple" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Omegapple, Mode=TwoWay}" />
+                    <MenuItem Header="patent" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Patent, Mode=TwoWay}" />
+                    <MenuItem Header="qsd" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Qsd, Mode=TwoWay}" />
+                    <MenuItem Header="rose" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Rose, Mode=TwoWay}" />
+                    <MenuItem Header="roundgreen" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Roundgreen, Mode=TwoWay}" />
                 </MenuItem>
                 <MenuItem Header="_Options">
                 </MenuItem>
