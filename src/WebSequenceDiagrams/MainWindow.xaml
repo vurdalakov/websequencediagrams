@@ -108,7 +108,7 @@
             </ToolBarPanel>
         </DockPanel-->
 
-        <TextBox Grid.Row="2" Grid.Column="0" AcceptsReturn="True" AcceptsTab="True" Text="{Binding WsdScript, Mode=TwoWay}" FontFamily="Consolas" vurdalakov:TextBoxUpdateSourceBehavior.UpdateSourceOnChange="True" vurdalakov:TextBoxLineColumnBehavior.LineNumber="{Binding LineNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.ColumnNumber="{Binding ColumnNumber, Mode=TwoWay}" vurdalakov:TextBoxLineColumnBehavior.Attach="True" vurdalakov:ControlLoadedBehavior.SetFocus="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" />
+        <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" />
 
         <Image Grid.Row="2" Grid.Column="1" Source="{Binding WsdImage}" Width="{Binding WsdImageWidth}" />
 
@@ -164,9 +164,9 @@
             <StatusBarItem>
                 <TextBlock>
                         <Run Text="Ln" />
-                        <Run Text="{Binding LineNumber}" />
+                        <Run Text="{Binding CurrentLine}" />
                         <Run Text="Col" />
-                        <Run Text="{Binding ColumnNumber}" />
+                        <Run Text="{Binding CurrentColumn}" />
                 </TextBlock>
             </StatusBarItem>
             <Separator Width="1" />

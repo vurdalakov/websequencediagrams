@@ -5,15 +5,35 @@
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Threading;
+    using System.Windows;
     using System.Windows.Input;
     using System.Windows.Threading;
 
     public class ViewModelBase : INotifyPropertyChanged
     {
-        public ViewModelBase()
+        public ViewModelBase() : this(null)
+        {
+        }
+
+        public ViewModelBase(Window window)
         {
             this.OpenLinkCommand = new CommandBase<String>(this.OnOpenLinkCommand);
             this.SendEmailCommand = new CommandBase<String>(this.OnSendEmailCommand);
+
+            if (window != null)
+            {
+                window.Loaded += (s, e) => this.OnMainWindowLoaded();
+                window.Closing += (s, e) => e.Cancel = this.OnMainWindowClosing();
+            }
+        }
+
+        public virtual void OnMainWindowLoaded()
+        {
+        }
+
+        public virtual Boolean OnMainWindowClosing()
+        {
+            return false;
         }
 
         public String ApplicationTitle { get { return ((Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false)) as AssemblyTitleAttribute).Title; } }

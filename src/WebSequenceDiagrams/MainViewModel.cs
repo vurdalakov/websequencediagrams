@@ -60,36 +60,36 @@
             }
         }
 
-        private Int32 _lineNumber = 1;
-        public Int32 LineNumber
+        private Int32 _currentLine = 1;
+        public Int32 CurrentLine
         {
             get
             {
-                return this._lineNumber;
+                return this._currentLine;
             }
             set
             {
-                if (value != this._lineNumber)
+                if (value != this._currentLine)
                 {
-                    this._lineNumber = value;
-                    this.OnPropertyChanged(() => this.LineNumber);
+                    this._currentLine = value;
+                    this.OnPropertyChanged(() => this.CurrentLine);
                 }
             }
         }
 
-        private Int32 _columnNumber = 1;
-        public Int32 ColumnNumber
+        private Int32 _currentColumn = 1;
+        public Int32 CurrentColumn
         {
             get
             {
-                return this._columnNumber;
+                return this._currentColumn;
             }
             set
             {
-                if (value != this._columnNumber)
+                if (value != this._currentColumn)
                 {
-                    this._columnNumber = value;
-                    this.OnPropertyChanged(() => this.ColumnNumber);
+                    this._currentColumn = value;
+                    this.OnPropertyChanged(() => this.CurrentColumn);
                 }
             }
         }
@@ -296,7 +296,7 @@
         private PermanentSettings _settings;
         private Timer _timer;
 
-        public MainViewModel()
+        public MainViewModel(Window window) : base(window)
         {
             this._settings = new PermanentSettings();
             this._style = (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
@@ -329,7 +329,7 @@
             this.FileNewCommand.Execute(null);
         }
 
-        public Boolean OnMainWindowClosing()
+        public override Boolean OnMainWindowClosing()
         {
             return !ConfirmSave();
         }
@@ -554,7 +554,8 @@
         public ICommand ErrorSelectedCommand { get; private set; }
         private void OnErrorSelectedCommand(Int32 lineNumber)
         {
-            this.LineNumber = lineNumber;
+            this.CurrentLine = lineNumber;
+            this.CurrentColumn = 1;
             this.SetFocusOnScript = false;
             this.SetFocusOnScript = true;
         }
