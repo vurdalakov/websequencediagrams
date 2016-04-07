@@ -1,0 +1,45 @@
+﻿<SyntaxDefinition name="WebSequenceDiagrams" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+
+  <Color name="Comment" foreground="Green" />
+  <Color name="String" foreground="Blue" />
+  <Color name="Bold" fontWeight="bold" />
+
+  <RuleSet>
+    <Span color="Comment" begin="#" />
+
+    <Keywords fontWeight="bold" foreground="Blue">
+      <Word>:</Word>
+      <Word>as</Word>
+      <Word>participant</Word>
+      <Word>title</Word>
+      <Word>-></Word>
+      <Word>->></Word>
+      <Word>--></Word>
+      <Word>-->></Word>
+      <Word>&lt;-></Word>
+      <Word>&lt;&lt;->></Word>
+      <Word>alt</Word>
+      <Word>else</Word>
+      <Word>opt</Word>
+      <Word>loop</Word>
+      <Word>par</Word>
+      <Word>end</Word>
+      <Word>note left of</Word>
+      <Word>note right if</Word>
+      <Word>note over</Word>
+      <Word>end note</Word>
+      <Word>activate</Word>
+      <Word>deactivate</Word>
+      <Word>parallel</Word>
+      <Word>state over</Word>
+      <Word>autonumber</Word>
+      <Word>autonumber off</Word>
+      <Word>ref over</Word>
+      <Word>end ref</Word>
+      <Word>option footer=none</Word>
+      <Word>option footer=bar</Word>
+    </Keywords>
+
+  </RuleSet>
+
+</SyntaxDefinition>

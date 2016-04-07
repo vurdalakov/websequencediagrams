@@ -345,7 +345,7 @@
             this.ScriptFilePath = null;
             this.OnPropertyChanged(() => this.MainWindowTitle);
 
-            SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: send request\r\nServer-> Client: return response");
+            SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: send request\r\nServer->Client: return response");
         }
 
         public ICommand FileOpenCommand { get; private set; }

@@ -2,12 +2,17 @@
 {
     using System;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Threading;
     using System.Windows;
     using System.Windows.Threading;
+    using System.Xml;
+
     using ICSharpCode.AvalonEdit;
+    using ICSharpCode.AvalonEdit.Highlighting;
+    using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
     public class AvalonEditor : TextEditor, INotifyPropertyChanged
     {
@@ -128,21 +133,27 @@
             this.OnPropertyChanged(() => this.Text);
         }
 
-        //protected override void OnOptionChanged(PropertyChangedEventArgs e)
-        //{
-        //    base.OnOptionChanged(e);
-        //}
+        // SyntaxHighlightingFromResource
 
-        //protected override void OnDocumentChanged(EventArgs e)
-        //{
-        //    base.OnDocumentChanged(e);
-        //}
+        public static DependencyProperty SyntaxHighlightingFromResourceProperty =
+            DependencyProperty.Register("SyntaxHighlightingFromResource", typeof(String), typeof(AvalonEditor), new UIPropertyMetadata("", OnSyntaxHighlightingFromResourcePropertyChanged));
 
-        //protected override bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
-        //{
-        //    return base.ReceiveWeakEvent(managerType, sender, e);
-        //}
+        public String SyntaxHighlightingFromResource
+        {
+            get { return GetValue(SyntaxHighlightingFromResourceProperty) as String; }
+            set { SetValue(SyntaxHighlightingFromResourceProperty, value); }
+        }
 
+        private static void OnSyntaxHighlightingFromResourcePropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(e.NewValue as String))
+            {
+                using (var xmlTextReader = new XmlTextReader(stream))
+                {
+                    (dependencyObject as AvalonEditor).SyntaxHighlighting = HighlightingLoader.Load(xmlTextReader, HighlightingManager.Instance);
+                }
+            }
+        }
 
         #region INotifyPropertyChanged
 
