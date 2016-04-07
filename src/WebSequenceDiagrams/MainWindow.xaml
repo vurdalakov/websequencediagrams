@@ -90,6 +90,9 @@
                 <MenuItem Header="_Options">
                 </MenuItem>
                 <MenuItem Header="_Help">
+                    <MenuItem Header="_WebSequenceDiagrams.com" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/" />
+                    <MenuItem Header="_Script Examples" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/examples.html" />
+                    <Separator />
                     <MenuItem Header="_About..." Command="{Binding AboutCommand}" />
                 </MenuItem>
             </Menu>
