@@ -66,12 +66,22 @@
                 }
             }
 
-            var participantLines = new List<String>();
+            while (lineIndexToInsert > 0)
+            {
+                if (!String.IsNullOrEmpty(lines[lineIndexToInsert - 1]))
+                {
+                    break;
+                }
 
-            //if (!String.IsNullOrEmpty(lines[lineIndexToInsert]))
-            //{
+                lineIndexToInsert--;
+                lines.RemoveAt(lineIndexToInsert);
+            }
+
+            var participantLines = new List<String>();
+            if (lineIndexToInsert > 0)
+            {
                 participantLines.Add("");
-            //}
+            }
             foreach (var participant in participants)
             {
                 participantLines.Add("participant " + (null == participant.Value ? participant.Key : String.Format("{2}{0}{2} as {1}", participant.Key, participant.Value, participant.Key.Contains(" ") ? "\"" : "")));
