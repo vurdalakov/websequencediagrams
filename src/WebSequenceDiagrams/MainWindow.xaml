@@ -27,16 +27,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="5*" />
+            <RowDefinition Height="5" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
-        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="3">
             <Menu ToolBar.OverflowMode="Never">
                 <MenuItem Header="_File">
                     <MenuItem Header="_New" InputGestureText="Ctrl+N" Command="{Binding FileNewCommand}" />
@@ -98,7 +100,7 @@
             </Menu>
         </DockPanel>
 
-        <!--DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+        <!--DockPanel Grid.Row="1" Grid.ColumnSpan="3">
             <ToolBarPanel DockPanel.Dock="Top">
                 <ToolBar ToolBarTray.IsLocked="True">
                     <Button Margin="8,0,8,0" Command="{Binding RefreshCommand}">
@@ -113,9 +115,13 @@
 
         <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" SyntaxHighlightingFromResource="Vurdalakov.WebSequenceDiagrams.WebSequenceDiagrams.xshd" />
 
-        <Image Grid.Row="2" Grid.Column="1" Source="{Binding WsdImage}" Width="{Binding WsdImageWidth}" />
+        <GridSplitter Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
-        <ListView Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding Errors}" vurdalakov:FillLastColumnBehavior.Attach="True">
+        <Image Grid.Row="2" Grid.Column="2" Source="{Binding WsdImage}" Width="{Binding WsdImageWidth}" />
+
+        <GridSplitter Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+        <ListView Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding Errors}" vurdalakov:FillLastColumnBehavior.Attach="True">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -163,7 +169,7 @@
             </ListView.View>
         </ListView>
 
-        <StatusBar Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+        <StatusBar Grid.Row="5" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">
             <StatusBarItem>
                 <TextBlock>
                         <Run Text="Ln" />
