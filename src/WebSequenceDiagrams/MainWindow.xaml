@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Vurdalakov.WebSequenceDiagrams"
         xmlns:vurdalakov="clr-namespace:Vurdalakov"
         mc:Ignorable="d"
-        Title="{Binding MainWindowTitle}"
+        Title="{Binding MainWindowTitle}" Icon="Images/Application.ico"
         Left="{Binding MainWindowLeft, Mode=TwoWay, FallbackValue=-200}" Top="{Binding MainWindowTop, Mode=TwoWay, FallbackValue=-200}"
         Width="{Binding MainWindowWidth, Mode=TwoWay, FallbackValue=1}" Height="{Binding MainWindowHeight, Mode=TwoWay, FallbackValue=1}">
 
@@ -90,7 +90,7 @@
                     <MenuItem Header="roundgreen" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Roundgreen, Mode=TwoWay}" />
                 </MenuItem>
                 <MenuItem Header="_Tools">
-                    <MenuItem Header="_Options" Command="{Binding ToolsOptionsCommand}" />
+                    <MenuItem Header="_Options..." Command="{Binding ToolsOptionsCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Help">
                     <MenuItem Header="_WebSequenceDiagrams.com" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/" />

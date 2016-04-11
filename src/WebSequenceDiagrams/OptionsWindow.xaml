@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <TabControl Grid.Row="0">
-            <TabItem Header="View">
+            <TabItem Header="General">
                 <GroupBox Header="Script" Padding="4" Margin="4">
                     <CheckBox Content="Syntax highlighting" IsChecked="{Binding SyntaxHighlighting, Mode=TwoWay}" />
                 </GroupBox>
