@@ -8,10 +8,26 @@
 
     public class PermanentSettings
     {
+        const String defaultFileName = "PermanentSettings.txt";
+
+        public static PermanentSettings Instance { get; private set; }
+
+        public static void Reset()
+        {
+            using (var isolatedStorageFile = IsolatedStorageFile.GetUserStoreForAssembly())
+            {
+                try
+                {
+                    isolatedStorageFile.DeleteFile(defaultFileName);
+                }
+                catch { }
+            }
+        }
+
         private readonly String _fileName;
         private readonly Dictionary<String, Object> _settings = new Dictionary<String, Object>();
 
-        public PermanentSettings() : this("PermanentSettings.txt")
+        public PermanentSettings() : this(defaultFileName)
         {
         }
 
@@ -58,6 +74,8 @@
                     }
                 }
             }
+
+            Instance = this;
         }
 
         public void Save()
