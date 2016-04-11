@@ -5,4 +5,4 @@ A simple desktop editor for [WebSequenceDiagrams.com](https://www.websequencedia
 
 Project is licensed under the MIT license.
 
-[[https://raw.githubusercontent.com/vurdalakov/websequencediagrams/master/wiki/img/screenshot1.png|alt=Screenshot of WebSequenceDiagrams.com Desktop Editor]]
+![Screenshot of WebSequenceDiagrams.com Desktop Editor](https://raw.githubusercontent.com/vurdalakov/websequencediagrams/master/wiki/img/screenshot1.png)
