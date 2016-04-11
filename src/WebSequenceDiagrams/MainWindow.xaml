@@ -20,8 +20,8 @@
         <KeyBinding Key="OemMinus" Modifiers="Ctrl" Command="{Binding ViewZoomOutCommand}" />
         <KeyBinding Key="F5" Modifiers="" Command="{Binding RefreshCommand}" />
     </Window.InputBindings>
-    
-    <Grid>
+
+    <Grid vurdalakov:GridSplitterBehavior.SaveAndRestore="MainWindow">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

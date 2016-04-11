@@ -81,6 +81,7 @@
     <Compile Include="Vurdalakov\ControlLoadedBehavior.cs" />
     <Compile Include="Vurdalakov\EnumToBooleanConverter.cs" />
     <Compile Include="Vurdalakov\FillLastColumnBehavior.cs" />
+    <Compile Include="Vurdalakov\GridSplitterBehavior.cs" />
     <Compile Include="Vurdalakov\IntegerToObjectConverter.cs" />
     <Compile Include="Vurdalakov\NameValueTypeViewModel.cs" />
     <Compile Include="Vurdalakov\NameValueViewModel.cs" />

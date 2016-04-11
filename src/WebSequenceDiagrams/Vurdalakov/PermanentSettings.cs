@@ -47,14 +47,10 @@
                             continue;
                         }
 
-                        var type = Type.GetType(parts[1]);
+                        var type = GetType(parts[1]);
                         if (null == type)
                         {
-                            type = Assembly.GetExecutingAssembly().GetType(parts[1]);
-                            if (null == type)
-                            {
-                                continue;
-                            }
+                            continue;
                         }
 
                         try
@@ -76,6 +72,20 @@
             }
 
             Instance = this;
+        }
+
+        private Type GetType(String typeName)
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var type = assembly.GetType(typeName);
+                if (type != null)
+                {
+                    return type;
+                }
+            }
+
+            return null;
         }
 
         public void Save()
@@ -121,29 +131,34 @@
             _settings.Remove(name);
         }
 
+        public T Get<T>(String name, T defaultValue)
+        {
+            return this.Contains(name) ? (T)this.Get(name) : defaultValue;
+        }
+
         public Object Get(String name, Object defaultValue)
         {
-            return this.Contains(name) ? this.Get(name) : defaultValue;
+            return Get<Object>(name, defaultValue);
         }
 
         public String Get(String name, String defaultValue)
         {
-            return this.Get(name, (Object)defaultValue) as String;
+            return Get<String>(name, defaultValue);
         }
 
         public Boolean Get(String name, Boolean defaultValue)
         {
-            return (Boolean)this.Get(name, (Object)defaultValue);
+            return Get<Boolean>(name, defaultValue);
         }
 
         public Int32 Get(String name, Int32 defaultValue)
         {
-            return (Int32)this.Get(name, (Object)defaultValue);
+            return Get<Int32>(name, defaultValue);
         }
 
         public Double Get(String name, Double defaultValue)
         {
-            return (Double)this.Get(name, (Object)defaultValue);
+            return Get<Double>(name, defaultValue);
         }
 
         public void CopyFrom(PermanentSettings permanentSettings, String name)
