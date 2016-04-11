@@ -67,7 +67,18 @@
                     <MenuItem Header="E_xit" InputGestureText="Alt+X" Command="{Binding ExitCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="Extract _Participants" Command="{Binding EditExtractParticipantsCommand}" />
+                    <MenuItem Header="_Undo" Command="Undo" />
+                    <MenuItem Header="_Redo" Command="Redo" />
+                    <Separator/>
+                    <MenuItem Header="Cu_t" Command="Cut" />
+                    <MenuItem Header="_Copy" Command="Copy" />
+                    <MenuItem Header="_Paste" Command="Paste" />
+                    <Separator />
+                    <MenuItem Header="Select _All" Command="SelectAll" />
+                    <Separator />
+                    <MenuItem Header="_Advanced">
+                        <MenuItem Header="Extract _Participants" Command="{Binding EditExtractParticipantsCommand}" />
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_View">
                     <MenuItem Header="Real _Size" InputGestureText="Ctrl+0" Command="{Binding ViewZoom100Command}" />
@@ -114,7 +125,20 @@
             </ToolBarPanel>
         </DockPanel-->
 
-        <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" SyntaxHighlightingFromResource="{Binding SyntaxHighlightingFromResource}" />
+        <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" SyntaxHighlightingFromResource="{Binding SyntaxHighlightingFromResource}">
+            <vurdalakov:AvalonEditor.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="_Undo" Command="Undo" />
+                    <MenuItem Header="_Redo" Command="Redo" />
+                    <Separator/>
+                    <MenuItem Header="Cu_t" Command="Cut" />
+                    <MenuItem Header="_Copy" Command="Copy" />
+                    <MenuItem Header="_Paste" Command="Paste" />
+                    <Separator />
+                    <MenuItem Header="Select _All" Command="SelectAll" />
+                </ContextMenu>
+            </vurdalakov:AvalonEditor.ContextMenu>
+        </vurdalakov:AvalonEditor>
 
         <GridSplitter Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
