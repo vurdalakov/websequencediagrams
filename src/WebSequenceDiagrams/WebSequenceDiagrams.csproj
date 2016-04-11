@@ -67,6 +67,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="OptionsViewModel.cs" />
+    <Compile Include="OptionsWindow.xaml.cs">
+      <DependentUpon>OptionsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vurdalakov\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -76,6 +80,7 @@
     <Compile Include="Vurdalakov\AvalonEditor.cs" />
     <Compile Include="Vurdalakov\BooleanToObjectConverter.cs" />
     <Compile Include="Vurdalakov\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Vurdalakov\CloseOnClickBehavior.cs" />
     <Compile Include="Vurdalakov\CommandBase.cs" />
     <Compile Include="Vurdalakov\CommandBaseGeneric.cs" />
     <Compile Include="Vurdalakov\ControlLoadedBehavior.cs" />
@@ -100,6 +105,10 @@
     <Compile Include="WebSequenceDiagramsException.cs" />
     <Compile Include="WebSequenceDiagramsResult.cs" />
     <Compile Include="WebSequenceDiagramsStyle.cs" />
+    <Page Include="OptionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vurdalakov\AboutWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

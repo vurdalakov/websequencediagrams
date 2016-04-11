@@ -2,7 +2,6 @@
 {
     using System;
     using System.Windows;
-    using Vurdalakov;
 
     public partial class AboutWindow : Window
     {

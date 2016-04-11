@@ -89,7 +89,8 @@
                     <MenuItem Header="rose" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Rose, Mode=TwoWay}" />
                     <MenuItem Header="roundgreen" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Roundgreen, Mode=TwoWay}" />
                 </MenuItem>
-                <MenuItem Header="_Options">
+                <MenuItem Header="_Tools">
+                    <MenuItem Header="_Options" Command="{Binding ToolsOptionsCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Help">
                     <MenuItem Header="_WebSequenceDiagrams.com" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/" />
@@ -113,7 +114,7 @@
             </ToolBarPanel>
         </DockPanel-->
 
-        <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" SyntaxHighlightingFromResource="Vurdalakov.WebSequenceDiagrams.WebSequenceDiagrams.xshd" />
+        <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" SyntaxHighlightingFromResource="{Binding SyntaxHighlightingFromResource}" />
 
         <GridSplitter Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 

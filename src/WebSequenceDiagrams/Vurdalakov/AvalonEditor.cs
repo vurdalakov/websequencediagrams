@@ -146,11 +146,20 @@
 
         private static void OnSyntaxHighlightingFromResourcePropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(e.NewValue as String))
+            var fileName = e.NewValue as String;
+
+            if (String.IsNullOrEmpty(fileName))
             {
-                using (var xmlTextReader = new XmlTextReader(stream))
+                (dependencyObject as TextEditor).SyntaxHighlighting = null;
+            }
+            else
+            {
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(fileName))
                 {
-                    (dependencyObject as AvalonEditor).SyntaxHighlighting = HighlightingLoader.Load(xmlTextReader, HighlightingManager.Instance);
+                    using (var xmlTextReader = new XmlTextReader(stream))
+                    {
+                        (dependencyObject as TextEditor).SyntaxHighlighting = HighlightingLoader.Load(xmlTextReader, HighlightingManager.Instance);
+                    }
                 }
             }
         }

@@ -291,6 +291,23 @@
             }
         }
 
+        private String syntaxHighlightingFromResource = "Vurdalakov.WebSequenceDiagrams.WebSequenceDiagrams.xshd";
+        public String SyntaxHighlightingFromResource
+        {
+            get
+            {
+                return this.syntaxHighlightingFromResource;
+            }
+            set
+            {
+                if (value != this.syntaxHighlightingFromResource)
+                {
+                    this.syntaxHighlightingFromResource = value;
+                    this.OnPropertyChanged(() => this.SyntaxHighlightingFromResource);
+                }
+            }
+        }
+
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
 
         private PermanentSettings _settings;
@@ -301,17 +318,23 @@
             this._settings = new PermanentSettings();
             this._style = (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
 
+            // File
             this.FileNewCommand = new CommandBase(this.OnFileNewCommand);
             this.FileOpenCommand = new CommandBase(this.OnFileOpenCommand);
             this.FileSaveCommand = new CommandBase(this.OnFileSaveCommand);
             this.FileSaveAsCommand = new CommandBase(this.OnFileSaveAsCommand);
             this.FileSaveImageAsCommand = new CommandBase(this.OnFileSaveImageAsCommand);
             this.ExitCommand = new CommandBase(this.OnExitCommand);
+            //Edit
             this.EditExtractParticipantsCommand = new CommandBase(this.OnEditExtractParticipantsCommand);
+            // View
             this.ViewZoom100Command = new CommandBase(this.OnViewZoom100Command);
             this.ViewZoomInCommand = new CommandBase(this.OnViewZoomInCommand);
             this.ViewZoomOutCommand = new CommandBase(this.OnViewZoomOutCommand);
             this.RefreshCommand = new CommandBase(this.OnRefreshCommand);
+            // Tools
+            this.ToolsOptionsCommand = new CommandBase(this.OnToolsOptionsCommand);
+            // Help
             this.AboutCommand = new CommandBase(this.OnAboutCommand);
 
             this.ErrorSelectedCommand = new CommandBase<Int32>(OnErrorSelectedCommand);
@@ -515,6 +538,13 @@
         {
             var aboutWindow = new AboutWindow(Application.Current.MainWindow);
             aboutWindow.ShowDialog();
+        }
+
+        public ICommand ToolsOptionsCommand { get; private set; }
+        public void OnToolsOptionsCommand()
+        {
+            var optionsWindow = new OptionsWindow(Application.Current.MainWindow, this);
+            optionsWindow.ShowDialog();
         }
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)
