@@ -5,6 +5,7 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
+
     // xmlns:vurdalakov="clr-namespace:Vurdalakov"
     // <Grid vurdalakov:GridSplitterBehavior.SaveAndRestore="True" />
     public static class GridSplitterBehavior
@@ -12,7 +13,7 @@
         // SaveAndRestore
 
         public static readonly DependencyProperty SaveAndRestoreProperty =
-            DependencyProperty.RegisterAttached("SaveAndRestore", typeof(String), typeof(FrameworkElement), new PropertyMetadata(null, OnSaveAndRestorePropertyChanged));
+            DependencyProperty.RegisterAttached("SaveAndRestore", typeof(String), typeof(GridSplitterBehavior), new PropertyMetadata(null, OnSaveAndRestorePropertyChanged));
 
         public static String GetSaveAndRestore(DependencyObject dependencyObject)
         {
