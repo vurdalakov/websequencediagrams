@@ -121,9 +121,17 @@
         {
             var avalonEditor = dependencyObject as AvalonEditor;
 
-            if (avalonEditor.Text != e.NewValue as String)
+            var text = e.NewValue as String;
+            if (avalonEditor.Text != text)
             {
-                avalonEditor.Text = e.NewValue as String;
+                if (String.IsNullOrEmpty(text))
+                {
+                    avalonEditor.Document.Remove(0, avalonEditor.Document.TextLength);
+                }
+                else
+                {
+                    avalonEditor.Document.Replace(0, avalonEditor.Document.TextLength, text);
+                }
             }
         }
 
@@ -131,6 +139,29 @@
         {
             SetValue(TextProperty, base.Text);
             this.OnPropertyChanged(() => this.Text);
+        }
+
+        // LoadText
+
+        public static DependencyProperty LoadTextProperty =
+            DependencyProperty.Register("LoadText", typeof(String), typeof(AvalonEditor), new UIPropertyMetadata("", OnLoadTextPropertyChanged));
+
+        public String LoadText
+        {
+            get { return GetValue(LoadTextProperty) as String; }
+            set { SetValue(LoadTextProperty, value); }
+        }
+
+        private static void OnLoadTextPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            var avalonEditor = dependencyObject as AvalonEditor;
+
+            var text = e.NewValue as String;
+            if (!String.IsNullOrEmpty(text))
+            {
+                avalonEditor.Text = text;
+                avalonEditor.Document.UndoStack.ClearAll();
+            }
         }
 
         // SyntaxHighlightingFromResource

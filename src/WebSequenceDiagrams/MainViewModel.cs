@@ -32,10 +32,12 @@
             }
         }
 
+        public String LoadWsdScript { get; private set; }
+
         private void SetWsdScript(String wsdScript)
         {
-            this._wsdScript = wsdScript;
-            this.OnPropertyChanged(() => this.WsdScript);
+            this.LoadWsdScript = wsdScript;
+            this.OnPropertyChanged(() => this.LoadWsdScript);
 
             this.Refresh();
         }
