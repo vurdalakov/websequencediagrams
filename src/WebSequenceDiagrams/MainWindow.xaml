@@ -10,6 +10,13 @@
         Left="{Binding MainWindowLeft, Mode=TwoWay, FallbackValue=-200}" Top="{Binding MainWindowTop, Mode=TwoWay, FallbackValue=-200}"
         Width="{Binding MainWindowWidth, Mode=TwoWay, FallbackValue=1}" Height="{Binding MainWindowHeight, Mode=TwoWay, FallbackValue=1}">
 
+    <Window.Resources>
+        <Style x:Key="PluginMenuItemStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Header" Value="{Binding Header}"/>
+            <Setter Property="Command" Value="{Binding Command}"/>
+        </Style>
+    </Window.Resources>
+    
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding FileNewCommand}" />
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding FileOpenCommand}" />
@@ -75,10 +82,6 @@
                     <MenuItem Header="_Paste" Command="Paste" />
                     <Separator />
                     <MenuItem Header="Select _All" Command="SelectAll" />
-                    <Separator />
-                    <MenuItem Header="_Advanced">
-                        <MenuItem Header="Extract _Participants" Command="{Binding EditExtractParticipantsCommand}" />
-                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_View">
                     <MenuItem Header="Real _Size" InputGestureText="Ctrl+0" Command="{Binding ViewZoom100Command}" />
@@ -99,6 +102,8 @@
                     <MenuItem Header="qsd" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Qsd, Mode=TwoWay}" />
                     <MenuItem Header="rose" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Rose, Mode=TwoWay}" />
                     <MenuItem Header="roundgreen" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Roundgreen, Mode=TwoWay}" />
+                </MenuItem>
+                <MenuItem Header="_Plugins" ItemsSource="{Binding PluginMenuItems}" ItemContainerStyle="{StaticResource PluginMenuItemStyle}">
                 </MenuItem>
                 <MenuItem Header="_Tools">
                     <MenuItem Header="_Options..." Command="{Binding ToolsOptionsCommand}" />

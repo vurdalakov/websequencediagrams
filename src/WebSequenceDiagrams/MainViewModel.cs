@@ -308,6 +308,8 @@
             }
         }
 
+        public ThreadSafeObservableCollection<MenuItemViewModel> PluginMenuItems { get; private set; }
+
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
 
         private PermanentSettings _settings;
@@ -350,6 +352,13 @@
             this.MainWindowHeight = this._settings.Get("MainWindowHeight", 768);
 
             this.FileNewCommand.Execute(null);
+
+            this.PluginMenuItems = new ThreadSafeObservableCollection<MenuItemViewModel>();
+            var plugins = PluginManager.FindPlugins();
+            foreach (var plugin in plugins)
+            {
+                this.PluginMenuItems.Add(new MenuItemViewModel(plugin.GetMenuName(), new CommandBase(() => this.WsdScript = plugin.ModifyScript(this.WsdScript))));
+            }
         }
 
         public override Boolean OnMainWindowClosing()
