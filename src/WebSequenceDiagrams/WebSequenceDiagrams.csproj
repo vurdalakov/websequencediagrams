@@ -105,7 +105,6 @@
     <Compile Include="Vurdalakov\ViewModelBase.cs" />
     <Compile Include="Vurdalakov\WindowExtensions.cs" />
     <Compile Include="WebSequenceDiagrams.cs" />
-    <Compile Include="WebSequenceDiagramsActions.cs" />
     <Compile Include="WebSequenceDiagramsException.cs" />
     <Compile Include="WebSequenceDiagramsResult.cs" />
     <Compile Include="WebSequenceDiagramsStyle.cs" />

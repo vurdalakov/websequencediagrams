@@ -329,8 +329,7 @@
             this.FileSaveAsCommand = new CommandBase(this.OnFileSaveAsCommand);
             this.FileSaveImageAsCommand = new CommandBase(this.OnFileSaveImageAsCommand);
             this.ExitCommand = new CommandBase(this.OnExitCommand);
-            //Edit
-            this.EditExtractParticipantsCommand = new CommandBase(this.OnEditExtractParticipantsCommand);
+            // Edit
             // View
             this.ViewZoom100Command = new CommandBase(this.OnViewZoom100Command);
             this.ViewZoomInCommand = new CommandBase(this.OnViewZoomInCommand);
@@ -502,17 +501,6 @@
         {
             Application.Current.MainWindow.Close();
         }
-
-        #region Edit menu
-
-        
-        public ICommand EditExtractParticipantsCommand { get; private set; }
-        public void OnEditExtractParticipantsCommand()
-        {
-            this.WsdScript = WebSequenceDiagramsActions.ExtractParticipants(this.WsdScript);
-        }
-
-        #endregion
 
         public ICommand ViewZoom100Command { get; private set; }
         public void OnViewZoom100Command()
