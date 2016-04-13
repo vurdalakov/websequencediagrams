@@ -310,6 +310,8 @@
             get { return this.SyntaxHighlighting ? "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd" : null; }
         }
 
+        public RecentFiles RecentFilesMenuItems { get; private set; }
+
         public ThreadSafeObservableCollection<MenuItemViewModel> PluginMenuItems { get; private set; }
 
         public ThreadSafeObservableCollection<ErrorViewModel> Errors { get; private set; }
@@ -324,6 +326,7 @@
             // File
             this.FileNewCommand = new CommandBase(this.OnFileNewCommand);
             this.FileOpenCommand = new CommandBase(this.OnFileOpenCommand);
+            this.FileOpenRecentCommand = new CommandBase<String>(this.OnFileOpenRecentCommand);
             this.FileSaveCommand = new CommandBase(this.OnFileSaveCommand);
             this.FileSaveAsCommand = new CommandBase(this.OnFileSaveAsCommand);
             this.FileSaveImageAsCommand = new CommandBase(this.OnFileSaveImageAsCommand);
@@ -346,6 +349,8 @@
             this._timer = new Timer(1000);
             this._timer.Elapsed += OnTimerElapsed;
 
+            this.RecentFilesMenuItems = new RecentFiles(this._settings, this.FileOpenRecentCommand);
+
             this.PluginMenuItems = new ThreadSafeObservableCollection<MenuItemViewModel>();
             var plugins = PluginManager.FindPlugins();
             foreach (var plugin in plugins)
@@ -356,7 +361,7 @@
 
         public override void OnMainWindowLoaded()
         {
-            var lastEditedFile = this._settings.Get("LastEditedFile", "");
+            var lastEditedFile = this.RecentFilesMenuItems.GetMostRecentFile();
             if (!this.OpenLastEditedFileOnStartup || String.IsNullOrEmpty(lastEditedFile) || !OpenFile(lastEditedFile))
             {
                 this.FileNewCommand.Execute(null);
@@ -380,14 +385,12 @@
             this.OnPropertyChanged(() => this.MainWindowTitle);
 
             SetWsdScript(this.NewFileContent);
-
-            this._settings.Set("LastEditedFile", "");
         }
 
         public ICommand FileOpenCommand { get; private set; }
         public void OnFileOpenCommand()
         {
-            if (!ConfirmSave())
+            if (!this.ConfirmSave())
             {
                 return;
             }
@@ -402,7 +405,16 @@
 
             if ((Boolean)dlg.ShowDialog())
             {
-                OpenFile(dlg.FileName);
+                this.OpenFile(dlg.FileName);
+            }
+        }
+
+        public ICommand FileOpenRecentCommand { get; private set; }
+        public void OnFileOpenRecentCommand(String fileName)
+        {
+            if (!this.OpenFile(fileName))
+            {
+                this.RecentFilesMenuItems.RemoveFile(fileName);
             }
         }
 
@@ -414,8 +426,8 @@
 
                 this.ScriptFilePath = fileName;
 
-                this._settings.Set("LastEditedFile", this.ScriptFilePath);
-                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
+                this.RecentFilesMenuItems.AddFile(fileName);
+                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(fileName));
 
                 return true;
             }
@@ -462,8 +474,8 @@
 
                     this.DirtyFlag = false;
 
-                    this._settings.Set("LastEditedFile", this.ScriptFilePath);
-                    this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
+                    this.RecentFilesMenuItems.AddFile(dlg.FileName);
+                    this._settings.Set("CurrentDirectory", Path.GetDirectoryName(dlg.FileName));
 
                     return true;
                 }

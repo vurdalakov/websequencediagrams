@@ -9,5 +9,7 @@
         <vurdalakov:NullToHiddenConverter x:Key="NullToHiddenConverter" />
         <vurdalakov:NullToFalseConverter x:Key="NullToFalseConverter" />
         <vurdalakov:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+        <vurdalakov:ZeroToFalseConverter x:Key="ZeroToFalseConverter" />
+        <vurdalakov:FormatMenuItemHeaderConverter x:Key="FormatMenuItemHeaderConverter" />
     </Application.Resources>
 </Application>

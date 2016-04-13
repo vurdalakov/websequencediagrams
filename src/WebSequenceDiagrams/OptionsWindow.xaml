@@ -21,8 +21,8 @@
                         <StackPanel>
                             <RadioButton Content="Open the last edited file" IsChecked="{Binding OpenLastEditedFileOnStartup, Mode=TwoWay}" />
                             <RadioButton Content="Open a new file" IsChecked="{Binding OpenLastEditedFileOnStartup, Mode=TwoWay, Converter={StaticResource ReverseBooleanConverter}}" />
-                            <TextBlock Text="Content of a new file:" />
-                            <TextBox Text="{Binding NewFileContent}" TextWrapping="NoWrap" AcceptsReturn="True" Height="60" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" />
+                            <TextBlock Text="Content of a new file:" Margin="0,8,0,0" />
+                            <TextBox Text="{Binding NewFileContent}" TextWrapping="NoWrap" AcceptsReturn="True" Height="75" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" />
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Script" Padding="4" Margin="4">

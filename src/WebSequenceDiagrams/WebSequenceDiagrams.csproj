@@ -97,9 +97,12 @@
     <Compile Include="Vurdalakov\MsgBox.cs" />
     <Compile Include="Vurdalakov\NameValueTypeViewModel.cs" />
     <Compile Include="Vurdalakov\NameValueViewModel.cs" />
+    <Compile Include="Vurdalakov\FormatMenuItemHeaderConverter.cs" />
     <Compile Include="Vurdalakov\NullToFalseConverter.cs" />
+    <Compile Include="Vurdalakov\ZeroToFalseConverter.cs" />
     <Compile Include="Vurdalakov\NullToHiddenConverter.cs" />
     <Compile Include="Vurdalakov\PermanentSettings.cs" />
+    <Compile Include="Vurdalakov\RecentFiles.cs" />
     <Compile Include="Vurdalakov\ReverseBooleanConverter.cs" />
     <Compile Include="Vurdalakov\SetFocusBehavior.cs" />
     <Compile Include="Vurdalakov\StringExtensions.cs" />
