@@ -130,7 +130,7 @@
             </ToolBarPanel>
         </DockPanel-->
 
-        <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" LoadText="{Binding LoadWsdScript}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" SyntaxHighlightingFromResource="{Binding SyntaxHighlightingFromResource}" local:SyntaxHighlightingBehavior.Enabled="True">
+        <vurdalakov:AvalonEditor Grid.Row="2" Text="{Binding WsdScript, Mode=TwoWay}" LoadText="{Binding LoadWsdScript}" FocusOnLoad="True" CurrentLine="{Binding CurrentLine, Mode=TwoWay}"  CurrentColumn="{Binding CurrentColumn, Mode=TwoWay}" ShowLineNumbers="True" vurdalakov:SetFocusBehavior.SetFocus="{Binding SetFocusOnScript}" SyntaxHighlightingFromResource="{Binding SyntaxHighlightingFromResource}" local:SyntaxHighlightingBehavior.Enabled="{Binding SyntaxHighlighting}">
             <vurdalakov:AvalonEditor.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="_Undo" Command="Undo" />

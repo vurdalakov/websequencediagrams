@@ -293,20 +293,32 @@
             }
         }
 
-        private String syntaxHighlightingFromResource = "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd";
+        private Boolean syntaxHighlighting = true;
+        public Boolean SyntaxHighlighting
+        {
+            get
+            {
+                return this.syntaxHighlighting;
+            }
+            set
+            {
+                if (value != this.syntaxHighlighting)
+                {
+                    this.syntaxHighlighting = value;
+                    this.OnPropertyChanged(() => this.SyntaxHighlighting);
+
+                    this.OnPropertyChanged(() => this.SyntaxHighlightingFromResource);
+
+                    this._settings.Set("SyntaxHighlighting", this.syntaxHighlighting);
+                }
+            }
+        }
+
         public String SyntaxHighlightingFromResource
         {
             get
             {
-                return this.syntaxHighlightingFromResource;
-            }
-            set
-            {
-                if (value != this.syntaxHighlightingFromResource)
-                {
-                    this.syntaxHighlightingFromResource = value;
-                    this.OnPropertyChanged(() => this.SyntaxHighlightingFromResource);
-                }
+                return this.SyntaxHighlighting ? "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd" : null;
             }
         }
 
@@ -321,6 +333,7 @@
         {
             this._settings = new PermanentSettings();
             this._style = (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
+            this.syntaxHighlighting = this._settings.Get("SyntaxHighlighting", true);
 
             // File
             this.FileNewCommand = new CommandBase(this.OnFileNewCommand);

@@ -29,7 +29,14 @@
 
             if (textEditor != null)
             {
-                textEditor.TextArea.TextView.LineTransformers.Add(new ParticipantsColorizer(textEditor));
+                if ((Boolean)e.NewValue)
+                {
+                    textEditor.TextArea.TextView.LineTransformers.Add(new ParticipantsColorizer(textEditor));
+                }
+                else
+                {
+                    textEditor.TextArea.TextView.LineTransformers.Clear();
+                }
             }
         }
     }

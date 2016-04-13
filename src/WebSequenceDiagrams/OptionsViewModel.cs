@@ -15,15 +15,13 @@
 
             this.OkCommand = new CommandBase(this.OnOkCommand);
 
-            this.SyntaxHighlighting = this.mainViewModel.SyntaxHighlightingFromResource != null;
+            this.SyntaxHighlighting = this.mainViewModel.SyntaxHighlighting;
         }
 
         public ICommand OkCommand { get; private set; }
         public void OnOkCommand()
         {
-            this.mainViewModel.SyntaxHighlightingFromResource = this.SyntaxHighlighting ? "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd" : null;
-
-
+            this.mainViewModel.SyntaxHighlighting = this.SyntaxHighlighting;
         }
     }
 }
