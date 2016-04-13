@@ -8,5 +8,6 @@
         <vurdalakov:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         <vurdalakov:NullToHiddenConverter x:Key="NullToHiddenConverter" />
         <vurdalakov:NullToFalseConverter x:Key="NullToFalseConverter" />
+        <vurdalakov:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
     </Application.Resources>
 </Application>

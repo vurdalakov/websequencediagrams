@@ -40,21 +40,18 @@
             this.Refresh();
         }
 
-        private WebSequenceDiagramsStyle _style;
         public WebSequenceDiagramsStyle Style
         {
             get
             {
-                return this._style;
+                return (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
             }
             set
             {
-                if (value != this._style)
+                if (value != this.Style)
                 {
-                    this._style = value;
-                    this.OnPropertyChanged(() => this.Style);
-
-                    this._settings.Set("WsdStyle", this._style);
+                    this._settings.Set("WsdStyle", value);
+                    this.OnPropertyChanged(() => value);
                     this.Refresh();
                 }
             }
@@ -111,78 +108,66 @@
             }
         }
 
-        private Int32 _mainWindowLeft = 64;
         public Int32 MainWindowLeft
         {
             get
             {
-                return this._mainWindowLeft;
+                return this._settings.Get("MainWindowLeft", 64);
             }
             set
             {
-                if (value != this._mainWindowLeft)
+                if (value != this.MainWindowLeft)
                 {
-                    this._mainWindowLeft = value;
+                    this._settings.Set("MainWindowLeft", value);
                     this.OnPropertyChanged(() => this.MainWindowLeft);
-
-                    this._settings.Set("MainWindowLeft", this._mainWindowLeft);
                 }
             }
         }
 
-        private Int32 _mainWindowTop = 64;
         public Int32 MainWindowTop
         {
             get
             {
-                return this._mainWindowTop;
+                return this._settings.Get("MainWindowTop", 64);
             }
             set
             {
-                if (value != this._mainWindowTop)
+                if (value != this.MainWindowTop)
                 {
-                    this._mainWindowTop = value;
+                    this._settings.Set("MainWindowTop", value);
                     this.OnPropertyChanged(() => this.MainWindowWidth);
-
-                    this._settings.Set("MainWindowTop", this._mainWindowTop);
                 }
             }
         }
 
-        private Int32 _mainWindowWidth = 1024;
         public Int32 MainWindowWidth
         {
             get
             {
-                return this._mainWindowWidth;
+                return this._settings.Get("MainWindowWidth", 1024);
             }
             set
             {
-                if (value != this._mainWindowWidth)
+                if (value != this.MainWindowWidth)
                 {
-                    this._mainWindowWidth = value;
+                    this._settings.Set("MainWindowWidth", value);
                     this.OnPropertyChanged(() => this.MainWindowWidth);
-
-                    this._settings.Set("MainWindowWidth", this._mainWindowWidth);
                 }
             }
         }
 
-        private Int32 _mainWindowHeight = 768;
         public Int32 MainWindowHeight
         {
             get
             {
-                return this._mainWindowHeight;
+                return this._settings.Get("MainWindowHeight", 768);
             }
             set
             {
-                if (value != this._mainWindowHeight)
+                if (value != this.MainWindowHeight)
                 {
-                    this._mainWindowHeight = value;
+                    this._settings.Set("MainWindowHeight", value);
                     this.OnPropertyChanged(() => this.MainWindowHeight);
-
-                    this._settings.Set("MainWindowHeight", this._mainWindowHeight);
                 }
             }
         }
@@ -291,33 +276,38 @@
             }
         }
 
-        private Boolean syntaxHighlighting = true;
         public Boolean SyntaxHighlighting
         {
             get
             {
-                return this.syntaxHighlighting;
+                return this._settings.Get("SyntaxHighlighting", true);
             }
             set
             {
-                if (value != this.syntaxHighlighting)
+                if (value != this.SyntaxHighlighting)
                 {
-                    this.syntaxHighlighting = value;
+                    this._settings.Set("SyntaxHighlighting", value);
                     this.OnPropertyChanged(() => this.SyntaxHighlighting);
-
                     this.OnPropertyChanged(() => this.SyntaxHighlightingFromResource);
-
-                    this._settings.Set("SyntaxHighlighting", this.syntaxHighlighting);
                 }
             }
         }
 
+        public Boolean OpenLastEditedFileOnStartup
+        {
+            get { return this._settings.Get("OpenLastEditedFileOnStartup", false); }
+            set { this._settings.Set("OpenLastEditedFileOnStartup", value); }
+        }
+
+        public String NewFileContent
+        {
+            get { return this._settings.Get("NewFileContent", "title Simple Sequence Diagram\r\nClient->Server: send request\r\nServer->Client: return response").Replace("$$$$$", Environment.NewLine); }
+            set { this._settings.Set("NewFileContent", value.Replace(Environment.NewLine, "$$$$$")); }
+        }
+
         public String SyntaxHighlightingFromResource
         {
-            get
-            {
-                return this.SyntaxHighlighting ? "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd" : null;
-            }
+            get { return this.SyntaxHighlighting ? "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd" : null; }
         }
 
         public ThreadSafeObservableCollection<MenuItemViewModel> PluginMenuItems { get; private set; }
@@ -330,8 +320,6 @@
         public MainViewModel(Window window) : base(window)
         {
             this._settings = new PermanentSettings();
-            this._style = (WebSequenceDiagramsStyle)this._settings.Get("WsdStyle", WebSequenceDiagramsStyle.Default);
-            this.syntaxHighlighting = this._settings.Get("SyntaxHighlighting", true);
 
             // File
             this.FileNewCommand = new CommandBase(this.OnFileNewCommand);
@@ -358,18 +346,20 @@
             this._timer = new Timer(1000);
             this._timer.Elapsed += OnTimerElapsed;
 
-            this.MainWindowLeft = this._settings.Get("MainWindowLeft", 64);
-            this.MainWindowTop = this._settings.Get("MainWindowTop", 64);
-            this.MainWindowWidth = this._settings.Get("MainWindowWidth", 1024);
-            this.MainWindowHeight = this._settings.Get("MainWindowHeight", 768);
-
-            this.FileNewCommand.Execute(null);
-
             this.PluginMenuItems = new ThreadSafeObservableCollection<MenuItemViewModel>();
             var plugins = PluginManager.FindPlugins();
             foreach (var plugin in plugins)
             {
                 this.PluginMenuItems.Add(new MenuItemViewModel(plugin.GetMenuName(), new CommandBase(() => this.WsdScript = plugin.ModifyScript(this.WsdScript))));
+            }
+        }
+
+        public override void OnMainWindowLoaded()
+        {
+            var lastEditedFile = this._settings.Get("LastEditedFile", "");
+            if (!this.OpenLastEditedFileOnStartup || String.IsNullOrEmpty(lastEditedFile) || !OpenFile(lastEditedFile))
+            {
+                this.FileNewCommand.Execute(null);
             }
         }
 
@@ -389,7 +379,9 @@
             this.ScriptFilePath = null;
             this.OnPropertyChanged(() => this.MainWindowTitle);
 
-            SetWsdScript("title Simple Sequence Diagram\r\nClient->Server: send request\r\nServer->Client: return response");
+            SetWsdScript(this.NewFileContent);
+
+            this._settings.Set("LastEditedFile", "");
         }
 
         public ICommand FileOpenCommand { get; private set; }
@@ -410,11 +402,27 @@
 
             if ((Boolean)dlg.ShowDialog())
             {
-                this.ScriptFilePath = dlg.FileName;
+                OpenFile(dlg.FileName);
+            }
+        }
 
+        private Boolean OpenFile(String fileName)
+        {
+            try
+            {
+                SetWsdScript(File.ReadAllText(fileName));
+
+                this.ScriptFilePath = fileName;
+
+                this._settings.Set("LastEditedFile", this.ScriptFilePath);
                 this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
 
-                SetWsdScript(File.ReadAllText(this.ScriptFilePath));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex, "Cannot open file\n{0}", fileName);
+                return false;
             }
         }
 
@@ -448,13 +456,22 @@
             {
                 this.ScriptFilePath = dlg.FileName;
 
-                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
+                try
+                {
+                    File.WriteAllText(this.ScriptFilePath, this.WsdScript);
 
-                File.WriteAllText(this.ScriptFilePath, this.WsdScript);
+                    this.DirtyFlag = false;
 
-                this.DirtyFlag = false;
+                    this._settings.Set("LastEditedFile", this.ScriptFilePath);
+                    this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
 
-                return true;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Error(ex, "Cannot save file", dlg.FileName);
+                    return false;
+                }
             }
 
             return false;
@@ -571,7 +588,7 @@
             {
                 this.Errors.Clear();
 
-                this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this._style.ToString().ToLower().Replace('_', '-'), "png");
+                this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this.Style.ToString().ToLower().Replace('_', '-'), "png");
 
                 this.WsdImage = this._webSequenceDiagramsResult.GetBitmapImage();
                 this.OnPropertyChanged(() => this.WsdImage);

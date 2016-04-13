@@ -94,12 +94,15 @@
     <Compile Include="Vurdalakov\GridSplitterBehavior.cs" />
     <Compile Include="Vurdalakov\IntegerToObjectConverter.cs" />
     <Compile Include="Vurdalakov\MenuItemViewModel.cs" />
+    <Compile Include="Vurdalakov\MsgBox.cs" />
     <Compile Include="Vurdalakov\NameValueTypeViewModel.cs" />
     <Compile Include="Vurdalakov\NameValueViewModel.cs" />
     <Compile Include="Vurdalakov\NullToFalseConverter.cs" />
     <Compile Include="Vurdalakov\NullToHiddenConverter.cs" />
     <Compile Include="Vurdalakov\PermanentSettings.cs" />
+    <Compile Include="Vurdalakov\ReverseBooleanConverter.cs" />
     <Compile Include="Vurdalakov\SetFocusBehavior.cs" />
+    <Compile Include="Vurdalakov\StringExtensions.cs" />
     <Compile Include="Vurdalakov\TextBoxLineColumnBehavior.cs" />
     <Compile Include="Vurdalakov\TextBoxUpdateSourceBehavior.cs" />
     <Compile Include="Vurdalakov\ThreadSafeObservableCollection.cs" />
