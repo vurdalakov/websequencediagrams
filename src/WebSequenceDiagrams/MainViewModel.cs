@@ -293,7 +293,7 @@
             }
         }
 
-        private String syntaxHighlightingFromResource = "Vurdalakov.WebSequenceDiagrams.WebSequenceDiagrams.xshd";
+        private String syntaxHighlightingFromResource = "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd";
         public String SyntaxHighlightingFromResource
         {
             get

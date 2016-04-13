@@ -74,6 +74,8 @@
     <Compile Include="Plugins\ExtractParticipantsPlugin.cs" />
     <Compile Include="Plugins\IWebSequenceDiagramsPlugin.cs" />
     <Compile Include="Plugins\PluginManager.cs" />
+    <Compile Include="SyntaxHighlighting\ParticipantsColorizer.cs" />
+    <Compile Include="SyntaxHighlighting\SyntaxHighlightingBehavior.cs" />
     <Compile Include="Vurdalakov\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -153,7 +155,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <EmbeddedResource Include="WebSequenceDiagrams.xshd" />
+    <EmbeddedResource Include="SyntaxHighlighting\WebSequenceDiagrams.xshd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

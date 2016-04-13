@@ -21,7 +21,7 @@
         public ICommand OkCommand { get; private set; }
         public void OnOkCommand()
         {
-            this.mainViewModel.SyntaxHighlightingFromResource = this.SyntaxHighlighting ? "Vurdalakov.WebSequenceDiagrams.WebSequenceDiagrams.xshd" : null;
+            this.mainViewModel.SyntaxHighlightingFromResource = this.SyntaxHighlighting ? "Vurdalakov.WebSequenceDiagrams.SyntaxHighlighting.WebSequenceDiagrams.xshd" : null;
 
 
         }

@@ -4,7 +4,7 @@
   <Color name="String" foreground="Blue" />
   <Color name="Bold" fontWeight="bold" />
 
-  <RuleSet>
+  <RuleSet ignoreCase="true">
     <Span color="Comment" begin="#" />
 
     <Keywords fontWeight="bold" foreground="Blue">
@@ -12,12 +12,18 @@
       <Word>as</Word>
       <Word>participant</Word>
       <Word>title</Word>
-      <Word>-></Word>
+      <Word>&lt;&lt;-->></Word>
+      <Word>&lt;&lt;->></Word>
+      <Word>&lt;--></Word>
+      <Word>&lt;-></Word>
+      <Word>-->></Word>
       <Word>->></Word>
       <Word>--></Word>
-      <Word>-->></Word>
-      <Word>&lt;-></Word>
-      <Word>&lt;&lt;->></Word>
+      <Word>-></Word>
+      <Word>&lt;&lt;--</Word>
+      <Word>&lt;&lt;-</Word>
+      <Word>&lt;--</Word>
+      <Word>&lt;-</Word>
       <Word>alt</Word>
       <Word>else</Word>
       <Word>opt</Word>
@@ -25,7 +31,7 @@
       <Word>par</Word>
       <Word>end</Word>
       <Word>note left of</Word>
-      <Word>note right if</Word>
+      <Word>note right of</Word>
       <Word>note over</Word>
       <Word>end note</Word>
       <Word>activate</Word>
