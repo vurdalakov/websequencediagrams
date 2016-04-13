@@ -161,6 +161,8 @@
             {
                 avalonEditor.Text = text;
                 avalonEditor.Document.UndoStack.ClearAll();
+
+                avalonEditor.IsModified = false;
             }
         }
 

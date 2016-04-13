@@ -26,8 +26,6 @@
 
                     this._timer.Stop();
                     this._timer.Start();
-
-                    this.DirtyFlag = true;
                 }
             }
         }
@@ -417,7 +415,6 @@
                 this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
 
                 SetWsdScript(File.ReadAllText(this.ScriptFilePath));
-                this.DirtyFlag = false;
             }
         }
 
@@ -454,6 +451,7 @@
                 this._settings.Set("CurrentDirectory", Path.GetDirectoryName(this.ScriptFilePath));
 
                 File.WriteAllText(this.ScriptFilePath, this.WsdScript);
+
                 this.DirtyFlag = false;
 
                 return true;
