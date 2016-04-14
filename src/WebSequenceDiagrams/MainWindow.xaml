@@ -57,6 +57,7 @@
                     <MenuItem Header="{Binding ScriptFileName, Converter={StaticResource FormatMenuItemHeaderConverter}, ConverterParameter='Save {0} _As...'}"  Command="{Binding FileSaveAsCommand}" />
                     <Separator />
                     <MenuItem Header="Save _Image As..." Command="{Binding FileSaveImageAsCommand}" />
+                    <MenuItem Header="_Export Image As..." Command="{Binding FileExportImageAsCommand}" />
                     <Separator />
                     <MenuItem Header="E_xit" InputGestureText="Alt+X" Command="{Binding ExitCommand}" />
                 </MenuItem>

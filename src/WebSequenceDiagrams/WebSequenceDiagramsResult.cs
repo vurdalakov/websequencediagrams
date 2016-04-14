@@ -64,5 +64,10 @@
                 }
             }
         }
+
+        public void SaveFile(String fileName)
+        {
+            File.WriteAllBytes(fileName, this.ImageData);
+        }
     }
 }

@@ -345,6 +345,7 @@
             this.FileSaveCommand = new CommandBase(this.OnFileSaveCommand);
             this.FileSaveAsCommand = new CommandBase(this.OnFileSaveAsCommand);
             this.FileSaveImageAsCommand = new CommandBase(this.OnFileSaveImageAsCommand);
+            this.FileExportImageAsCommand = new CommandBase(this.OnFileExportImageAsCommand);
             this.ExitCommand = new CommandBase(this.OnExitCommand);
             // Edit
             // View
@@ -530,7 +531,6 @@
             }
         }
 
-        
         public ICommand FileSaveImageAsCommand { get; private set; }
         public void OnFileSaveImageAsCommand()
         {
@@ -544,10 +544,61 @@
 
             if ((Boolean)dlg.ShowDialog())
             {
-                this._settings.Set("CurrentDirectory", Path.GetDirectoryName(dlg.FileName));
-                this._settings.Set("FileSaveImageAsFilterIndex", dlg.FilterIndex);
+                try
+                {
+                    this._webSequenceDiagramsResult.SaveImage(dlg.FileName, dlg.FilterIndex);
 
-                this._webSequenceDiagramsResult.SaveImage(dlg.FileName, dlg.FilterIndex);
+                    this._settings.Set("CurrentDirectory", Path.GetDirectoryName(dlg.FileName));
+                    this._settings.Set("FileSaveImageAsFilterIndex", dlg.FilterIndex);
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Error(ex, "Cannot export image to\n{0}", dlg.FileName);
+                }
+            }
+        }
+
+        public ICommand FileExportImageAsCommand { get; private set; }
+        public void OnFileExportImageAsCommand()
+        {
+            var dlg = new SaveFileDialog();
+            dlg.AddExtension = true;
+            dlg.CheckPathExists = true;
+            dlg.Filter = "Portable Network Graphics (*.png)|*.png|Portable Document Format (*.pdf)|*.pdf|Scalable Vector Graphics (*.svg)|*.svg";
+            dlg.FilterIndex = this._settings.Get("FileExportImageAsFilterIndex", 1);
+            dlg.InitialDirectory = this._settings.Get("CurrentDirectory", Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+            dlg.OverwritePrompt = true;
+
+            if ((Boolean)dlg.ShowDialog())
+            {
+                try
+                {
+                    var format = "";
+                    switch (dlg.FilterIndex)
+                    {
+                        case 1:
+                            format = "png";
+                            break;
+                        case 2:
+                            format = "pdf";
+                            break;
+                        case 3:
+                            format = "svg";
+                            break;
+                        default:
+                            throw new ArgumentException("Unsupported output format");
+                    }
+
+                    var webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this.Style.ToString().ToLower().Replace('_', '-'), format, this.ApiKey);
+                    webSequenceDiagramsResult.SaveFile(dlg.FileName);
+
+                    this._settings.Set("CurrentDirectory", Path.GetDirectoryName(dlg.FileName));
+                    this._settings.Set("FileExportImageAsFilterIndex", dlg.FilterIndex);
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Error(ex, "Cannot export image to\n{0}", dlg.FileName);
+                }
             }
         }
 
