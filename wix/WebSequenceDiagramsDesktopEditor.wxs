@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'
+	xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+	xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
+  <?define var.Version  = "ApplicationVersion"?>
+
+  <Product Name='WebSequenceDiagrams Desktop Editor' Id='*' UpgradeCode='DBA8B757-C5BD-43C8-8148-B39284CCAA61' Language='1033' Codepage='1252' Version='$(var.Version)' Manufacturer='Vurdalakov'>
+
+    <Package Id='*' Keywords='Installer' Description="WebSequenceDiagrams Desktop Editor Installer" Manufacturer='Vurdalakov' InstallPrivileges='limited' InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' InstallScope='perUser'/>
+
+    <Media Id='1' Cabinet='WebSequenceDiagramsDesktopEditor.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
+    <Property Id='DiskPrompt' Value="WebSequenceDiagrams Desktop Editor Installation" />
+
+    <UIRef Id="WixUI_Minimal" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+
+    <Condition Message="This application is only supported on Windows XP, Windows Server 2003 or higher.">
+      <![CDATA[Installed OR (VersionNT >= 501)]]>
+    </Condition>
+
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework 4.0 and then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+    </Condition>
+
+    <MajorUpgrade AllowDowngrades="no" DowngradeErrorMessage="A newer version of this application is already installed on this computer. If you wish to install this version, please uninstall the newer version first." />
+
+    <Icon Id="WebSequenceDiagramsDesktopEditor.exe" SourceFile="WebSequenceDiagramsDesktopEditor.exe" />
+    <Icon Id="uninstall.ico" SourceFile="uninstall.ico" />
+
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+
+      <Directory Id='LocalAppDataFolder' Name='LocalAppDataFolder'>
+
+        <Directory Id='VurdalakovFolder' Name='Vurdalakov'>
+          <Component Id='VurdalakovFolder' Guid='DBA8B757-C5BD-43C8-8148-B39284CCAA62'>
+            <RemoveFolder Id='VurdalakovFolder' On='uninstall' />
+          </Component>
+            
+          <Directory Id='INSTALLDIR' Name='WebSequenceDiagrams Desktop Editor'>
+            <Component Id='WebSequenceDiagramsDesktopEditorFolder' Guid='DBA8B757-C5BD-43C8-8148-B39284CCAA63'>
+              <CreateFolder>
+                <util:PermissionEx User="Everyone" GenericAll="yes"/>
+              </CreateFolder>
+              <RemoveFolder Id='INSTALLDIR' On='uninstall' />
+            </Component>
+
+            <Component Id='WebSequenceDiagramsDesktopEditorFiles' Guid='DBA8B757-C5BD-43C8-8148-B39284CCAA64'>
+              <File Id='WebSequenceDiagramsDesktopEditor.exe' Name='WebSequenceDiagramsDesktopEditor.exe' Source='WebSequenceDiagramsDesktopEditor.exe' DiskId='1' KeyPath='yes'>
+                <Shortcut Id="StartProgram" Name="WebSequenceDiagrams Desktop Editor" WorkingDirectory='INSTALLDIR' Icon="WebSequenceDiagramsDesktopEditor.exe" IconIndex="0" Directory="ProgramMenuDir" Description="Starts WebSequenceDiagrams Desktop Editor" Advertise="yes" />
+                <Shortcut Id="StartProgramFromDesktop" Name="WebSequenceDiagrams Desktop Editor" WorkingDirectory='INSTALLDIR' Icon="WebSequenceDiagramsDesktopEditor.exe" IconIndex="0" Directory="DesktopFolder" Description="Starts WebSequenceDiagrams Desktop Editor" Advertise="yes" />
+              </File>
+              <File Id='ICSharpCode.AvalonEdit.dll' Name='ICSharpCode.AvalonEdit.dll' Source='ICSharpCode.AvalonEdit.dll' DiskId='1' />
+              <File Id='Newtonsoft.Json.dll' Name='Newtonsoft.Json.dll' Source='Newtonsoft.Json.dll' DiskId='1' />
+            </Component>
+             
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="ProgramMenuFolder">
+        <Directory Id="ProgramMenuDir" Name="WebSequenceDiagrams Desktop Editor">
+          <Component Id="ProgramMenu" Guid="DBA8B757-C5BD-43C8-8148-B39284CCAA65">
+            <RegistryValue Root='HKCU' Key='Software\Vurdalakov\WebSequenceDiagramsDesktopEditor' Name='version' Type='string' Value='$(var.Version)' KeyPath='yes' />
+            <Shortcut Id="UninstallProduct" Name="Uninstall WebSequenceDiagrams Desktop Editor" Icon="uninstall.ico" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Directory="ProgramMenuDir" Description="Uninstalls WebSequenceDiagrams Desktop Editor" />
+            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop" />
+   
+    </Directory>
+    
+    <Feature Id='Complete' Level='1'>
+      <ComponentRef Id='VurdalakovFolder' />
+      <ComponentRef Id='WebSequenceDiagramsDesktopEditorFolder' />
+      <ComponentRef Id='WebSequenceDiagramsDesktopEditorFiles' />
+      <ComponentRef Id='ProgramMenu' />
+    </Feature>
+
+  </Product>
+
+</Wix>
