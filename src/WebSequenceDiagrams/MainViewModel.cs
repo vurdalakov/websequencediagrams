@@ -181,7 +181,7 @@
         {
             get
             {
-                return String.Format("{0} - {1} {2}", this.ApplicationTitleAndVersion, this.GetFileTitle(), this.DirtyFlag ? "*" : "");
+                return String.Format("{0} - {1} {2}", this.ApplicationTitle, this.GetFileTitle(), this.DirtyFlag ? "*" : "");
             }
         }
 
@@ -289,6 +289,21 @@
                     this._settings.Set("SyntaxHighlighting", value);
                     this.OnPropertyChanged(() => this.SyntaxHighlighting);
                     this.OnPropertyChanged(() => this.SyntaxHighlightingFromResource);
+                }
+            }
+        }
+
+        public String ApiKey
+        {
+            get
+            {
+                return this._settings.Get("ApiKey", null);
+            }
+            set
+            {
+                if (value != this.ApiKey)
+                {
+                    this._settings.Set("ApiKey", value);
                 }
             }
         }
@@ -600,7 +615,7 @@
             {
                 this.Errors.Clear();
 
-                this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this.Style.ToString().ToLower().Replace('_', '-'), "png");
+                this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this.Style.ToString().ToLower().Replace('_', '-'), "png", this.ApiKey);
 
                 this.WsdImage = this._webSequenceDiagramsResult.GetBitmapImage();
                 this.OnPropertyChanged(() => this.WsdImage);

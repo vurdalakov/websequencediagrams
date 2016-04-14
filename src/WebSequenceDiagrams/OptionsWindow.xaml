@@ -17,6 +17,14 @@
         <TabControl Grid.Row="0">
             <TabItem Header="General">
                 <StackPanel>
+                    <GroupBox Header="API Key" Padding="4" Margin="4">
+                        <StackPanel Orientation="Vertical"  HorizontalAlignment="Stretch">
+                            <TextBox Text="{Binding ApiKey}" TextWrapping="NoWrap" />
+                            <TextBlock TextAlignment="Right">
+                                <Hyperlink Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/users/getapikey">Get API key</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </GroupBox>
                     <GroupBox Header="At Startup" Padding="4" Margin="4">
                         <StackPanel>
                             <RadioButton Content="Open the last edited file" IsChecked="{Binding OpenLastEditedFileOnStartup, Mode=TwoWay}" />

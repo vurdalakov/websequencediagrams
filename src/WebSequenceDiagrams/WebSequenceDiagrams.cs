@@ -13,13 +13,18 @@
             ServicePointManager.Expect100Continue = false;
         }
 
-        public static WebSequenceDiagramsResult DownloadDiagram(String wsdScript, String style, String format)
+        public static WebSequenceDiagramsResult DownloadDiagram(String wsdScript, String style, String format, String apiKey = null)
         {
             var requestData = new NameValueCollection();
             requestData.Add("apiVersion", "1");
             requestData.Add("style", style);
             requestData.Add("format", format);
             requestData.Add("message", wsdScript);
+
+            if (!String.IsNullOrEmpty(apiKey))
+            {
+                requestData.Add("apikey", apiKey);
+            }
 
             var webClient = new WebClient();
             webClient.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
