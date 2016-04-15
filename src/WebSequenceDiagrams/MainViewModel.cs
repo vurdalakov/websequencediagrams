@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Threading.Tasks;
     using System.Timers;
     using System.Windows;
     using System.Windows.Input;
@@ -36,8 +37,6 @@
         {
             this.LoadWsdScript = wsdScript;
             this.OnPropertyChanged(() => this.LoadWsdScript);
-
-            this.Refresh();
         }
 
         public WebSequenceDiagramsStyle Style
@@ -660,30 +659,65 @@
 
         private WebSequenceDiagramsResult _webSequenceDiagramsResult;
 
+        private String refreshStatus;
+        public String RefreshStatus
+        {
+            get
+            {
+                return this.refreshStatus;
+            }
+            set
+            {
+                if (value != this.refreshStatus)
+                {
+                    this.refreshStatus = value;
+                    this.OnPropertyChanged(() => this.RefreshStatus);
+                }
+            }
+        }
+
         private void Refresh()
         {
-            try
+            RefreshStatus = "Updating image...";
+
+            var task = Task.Factory.StartNew(() => this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this.Style.ToString().ToLower().Replace('_', '-'), "png", this.ApiKey));
+
+            task.ContinueWith(t =>
             {
                 this.Errors.Clear();
 
-                this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this.Style.ToString().ToLower().Replace('_', '-'), "png", this.ApiKey);
+                if (task.Exception != null)
+                {
+                    RefreshStatus = "Error(s) detected";
+
+                    var ex = task.Exception.InnerException;
+                    if (ex is WebSequenceDiagramsException)
+                    {
+                        foreach (var error in (ex as WebSequenceDiagramsException).Errors)
+                        {
+                            this.Errors.Add(new ErrorViewModel(error.Line, error.Message));
+                        }
+                    }
+                    else
+                    {
+                        this.Errors.Add(new ErrorViewModel(0, ex.Message));
+                    }
+                }
+                else
+                {
+                    RefreshStatus = "Ready";
+                }
 
                 this.WsdImage = this._webSequenceDiagramsResult.GetBitmapImage();
                 this.OnPropertyChanged(() => this.WsdImage);
 
                 this.ActualWsdImageWidth = this._webSequenceDiagramsResult.ActualImageWidth;
-            }
-            catch (WebSequenceDiagramsException ex)
-            {
-                foreach (var error in ex.Errors)
-                {
-                    this.Errors.Add(new ErrorViewModel(error.Line, error.Message));
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Errors.Add(new ErrorViewModel(0, ex.Message));
-            }
+            });
+        }
+
+        private void DownloadImage()
+        {
+            this._webSequenceDiagramsResult = WebSequenceDiagrams.DownloadDiagram(this._wsdScript, this.Style.ToString().ToLower().Replace('_', '-'), "png", this.ApiKey);
         }
 
         public ICommand ErrorSelectedCommand { get; private set; }

@@ -28,7 +28,7 @@
 
             var webClient = new WebClient();
             webClient.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-            var responseData =  webClient.UploadValues("http://www.websequencediagrams.com/index.php", "POST", requestData);
+            var responseData = webClient.UploadValues("http://www.websequencediagrams.com/index.php", "POST", requestData);
             var jsonText = Encoding.ASCII.GetString(responseData);
 
             var root = JObject.Parse(jsonText);

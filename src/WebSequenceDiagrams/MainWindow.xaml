@@ -196,12 +196,16 @@
                         <Run Text="{Binding CurrentColumn}" />
                 </TextBlock>
             </StatusBarItem>
-            <Separator Width="1" />
+            <Separator Style="{StaticResource {x:Static StatusBar.SeparatorStyleKey}}" />
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock>
-                    <Run Text="{Binding Zoom}" />
-                    <Run Text="%" />
-                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding RefreshStatus}" />
+                    <Separator Style="{StaticResource {x:Static StatusBar.SeparatorStyleKey}}" Margin="4,0,2,0" />
+                    <TextBlock>
+                        <Run Text="{Binding Zoom}" />
+                        <Run Text="%" />
+                    </TextBlock>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>
