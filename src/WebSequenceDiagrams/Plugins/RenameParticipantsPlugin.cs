@@ -1,10 +1,11 @@
 ﻿namespace Vurdalakov.WebSequenceDiagrams
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
+    using System.Text;
     using System.Text.RegularExpressions;
     using System.Windows;
+
     public class RenameParticipantsPlugin : IWebSequenceDiagramsPlugin
     {
         public String GetMenuName()
@@ -30,90 +31,68 @@
                 return script;
             }
 
-            MsgBox.Info(String.Format("{0}=>{1}", viewModel.OldName, viewModel.NewName));
-            return script;
+            var isUser = viewModel.IsUser;
+            var oldName = viewModel.OldName;
+            var newName = viewModel.NewName;
 
-            //var lines = new List<String>();
-            //var participants = new Dictionary<String, String>();
+            var newScript = new StringBuilder();
+            using (var stringReader = new StringReader(script))
+            {
+                var line = "";
+                while ((line = stringReader.ReadLine()) != null)
+                {
+                    var participant = Participants.GetParticipant(line);
+                    if (participant != null)
+                    {
+                        if (null == participant[1])
+                        {
+                            if (isUser)
+                            {
+                                newScript.AppendFormat("participant {0}\r\n", Rename(participant[0], oldName, newName));
+                            }
+                            else
+                            {
+                                newScript.AppendLine(line);
+                            }
+                        }
+                        else
+                        {
+                            if (isUser)
+                            {
+                                newScript.AppendFormat("participant {0} as {1}\r\n", Rename(participant[0], oldName, newName), participant[1]);
+                            }
+                            else
+                            {
+                                newScript.AppendFormat("participant {0} as {1}\r\n", participant[0], Rename(participant[1], oldName, newName));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var matches = Regex.Match(line, @"(.+?)(<?-+>+)(.+?):(.*)");
+                        if (5 == matches.Groups.Count)
+                        {
+                            newScript.AppendFormat("{0}{1}{2}{3}{4}\r\n",
+                                Rename(matches.Groups[1].Value.Trim(), oldName, newName),
+                                matches.Groups[2].Value.Trim(),
+                                Rename(matches.Groups[3].Value.Trim(), oldName, newName),
+                                ":",
+                                matches.Groups[4].Value.Trim());
+                        }
+                        else
+                        {
+                            newScript.AppendLine(line);
+                        }
+                    }
+                }
 
-            //using (var stringReader = new StringReader(script))
-            //{
-            //    var line = "";
-            //    while ((line = stringReader.ReadLine()) != null)
-            //    {
-            //        if (line.Trim().StartsWith("participant ", StringComparison.CurrentCultureIgnoreCase))
-            //        {
-            //            line = line.Trim().Substring("participant ".Length);
+                return newScript.ToString();
+            }
+        }
 
-            //            var parts = line.Split(new String[] { " as " }, StringSplitOptions.None);
-
-            //            var participant = parts[0].Trim();
-            //            if (participant.StartsWith("\"") && participant.EndsWith("\""))
-            //            {
-            //                participant = participant.Substring(1, participant.Length - 2).Trim();
-            //            }
-
-            //            participants.Add(participant, 2 == parts.Length ? parts[1].Trim() : null);
-            //        }
-            //        else
-            //        {
-            //            lines.Add(line);
-            //        }
-            //    }
-            //}
-
-            //var lineIndexToInsert = 0;
-            //foreach (var line in lines)
-            //{
-            //    if (!String.IsNullOrEmpty(line) && !line.StartsWith("#") && !line.StartsWith("title "))
-            //    {
-            //        break;
-            //    }
-            //    lineIndexToInsert++;
-            //}
-
-            //for (var i = lineIndexToInsert; i < lines.Count; i++)
-            //{
-            //    var matches = Regex.Match(lines[i], "(.+?)<?-+>+(.+?):");
-            //    if (3 == matches.Groups.Count)
-            //    {
-            //        var participant1 = matches.Groups[1].Value.Trim();
-            //        var participant2 = matches.Groups[2].Value.Trim();
-            //        if (!participants.ContainsKey(participant1) && !participants.ContainsValue(participant1))
-            //        {
-            //            participants.Add(participant1, null);
-            //        }
-            //        if (!participants.ContainsKey(participant2) && !participants.ContainsValue(participant2))
-            //        {
-            //            participants.Add(participant2, null);
-            //        }
-            //    }
-            //}
-
-            //while (lineIndexToInsert > 0)
-            //{
-            //    if (!String.IsNullOrEmpty(lines[lineIndexToInsert - 1]))
-            //    {
-            //        break;
-            //    }
-
-            //    lineIndexToInsert--;
-            //    lines.RemoveAt(lineIndexToInsert);
-            //}
-
-            //var participantLines = new List<String>();
-            //if (lineIndexToInsert > 0)
-            //{
-            //    participantLines.Add("");
-            //}
-            //foreach (var participant in participants)
-            //{
-            //    participantLines.Add("participant " + (null == participant.Value ? participant.Key : String.Format("{2}{0}{2} as {1}", participant.Key, participant.Value, participant.Key.Contains(" ") ? "\"" : "")));
-            //}
-            //participantLines.Add("");
-            //lines.InsertRange(lineIndexToInsert, participantLines);
-
-            //return String.Join("\r\n", lines);
+        private String Rename(String name, String oldName, String newName)
+        {
+            return name.Equals(oldName) ? newName : name;
         }
     }
 }

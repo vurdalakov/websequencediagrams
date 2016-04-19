@@ -18,24 +18,15 @@
                 var line = "";
                 while ((line = stringReader.ReadLine()) != null)
                 {
-                    if (line.Trim().StartsWith("participant ", StringComparison.CurrentCultureIgnoreCase))
+                    var participant = GetParticipant(line);
+                    if (participant != null)
                     {
-                        line = line.Trim().Substring("participant ".Length);
-
-                        var parts = line.Split(new String[] { " as " }, StringSplitOptions.None);
-
-                        var participant = parts[0].Trim();
-                        if (participant.StartsWith("\"") && participant.EndsWith("\""))
-                        {
-                            participant = participant.Substring(1, participant.Length - 2).Trim();
-                        }
-
-                        if (2 == parts.Length)
+                        if (participant[1] != null)
                         {
                             this.AliasesCount++;
                         }
 
-                        this.Add(participant, 2 == parts.Length ? parts[1].Trim() : null);
+                        this.Add(participant[0], participant[1]);
                     }
                     else
                     {
@@ -55,6 +46,46 @@
             if (!this.ContainsKey(userName) && !this.ContainsValue(userName))
             {
                 this.Add(userName, null);
+            }
+        }
+
+        public static String[] GetParticipant(String line)
+        {
+            const String participant = "participant ";
+
+            if (!line.Trim().StartsWith(participant, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return null;
+            }
+
+            line = line.Trim().Substring(participant.Length);
+
+            var parts = line.Split(new String[] { " as " }, StringSplitOptions.None);
+
+            var array = new String[2];
+            array[0] = RemoveQuotes(parts[0]);
+            array[1] = RemoveQuotes(2 == parts.Length ? parts[1] : null);
+
+            return array;
+        }
+
+        private static String RemoveQuotes(String text)
+        {
+            if (String.IsNullOrWhiteSpace(text))
+            {
+                return null;
+            }
+
+            text = text.Trim();
+
+            if (text.StartsWith("\"") && text.EndsWith("\""))
+            {
+                text = text.Substring(1, text.Length - 2).Trim();
+                return String.IsNullOrEmpty(text) ? null : text;
+            }
+            else
+            {
+                return text;
             }
         }
     }
