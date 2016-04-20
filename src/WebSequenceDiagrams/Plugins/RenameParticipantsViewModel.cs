@@ -41,8 +41,7 @@
         public ThreadSafeObservableCollection<ParticipantViewModel> OldUsers { get; private set; }
         public ParticipantViewModel OldUser { get; set; }
 
-        public Boolean? DialogResult { get; private set; }
-        public String OldName { get; private set; }
+        public String OldName { get { return this.OldUser.Name; } }
 
         private String newName = "";
         public String NewName
@@ -63,8 +62,6 @@
 
         public RenameParticipantsViewModel(Participants participants)
         {
-            this.OkCommand = new CommandBase(this.OnOkCommand);
-
             this.participants = participants;
 
             this.AliasesAvailable = participants.AliasesCount > 0;
@@ -90,15 +87,6 @@
 
             this.OldUser = this.OldUsers.First();
             this.OnPropertyChanged(() => this.OldUser);
-        }
-
-        public ICommand OkCommand { get; private set; }
-        public void OnOkCommand()
-        {
-            this.OldName = this.OldUser.Name;
-
-            this.DialogResult = true;
-            this.OnPropertyChanged(() => this.DialogResult);
         }
     }
 }

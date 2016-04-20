@@ -7,7 +7,6 @@
         xmlns:vurdalakov="clr-namespace:Vurdalakov"
         mc:Ignorable="d"
         ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
-        vurdalakov:DialogResultBehavior.DialogResult="{Binding DialogResult}"
         Title="Rename Participants" Height="200" Width="200">
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
@@ -26,7 +25,7 @@
             <TextBlock Text="New name:" />
             <TextBox Text="{Binding NewName, Mode=TwoWay}" vurdalakov:TextBoxUpdateSourceBehavior.UpdateSourceOnChange="True" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
-                <Button Content="OK" Margin="0,0,8,0" Width="64" IsDefault="True" Command="{Binding OkCommand}" IsEnabled="{Binding NewName.Length, Converter={StaticResource ZeroToFalseConverter}}" />
+                <Button Content="OK" Margin="0,0,8,0" Width="64" IsDefault="True" IsEnabled="{Binding NewName.Length, Converter={StaticResource ZeroToFalseConverter}}" vurdalakov:CloseOnClickBehavior.DialogResult="True" />
                 <Button Content="Cancel" Margin="8,0,0,0" Width="64" IsCancel="True" />
             </StackPanel>
         </StackPanel>

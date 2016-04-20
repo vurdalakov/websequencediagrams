@@ -106,7 +106,6 @@
     <Compile Include="Vurdalakov\CloseOnClickBehavior.cs" />
     <Compile Include="Vurdalakov\CommandBase.cs" />
     <Compile Include="Vurdalakov\CommandBaseGeneric.cs" />
-    <Compile Include="Vurdalakov\DialogResultBehavior.cs" />
     <Compile Include="Vurdalakov\ControlLoadedBehavior.cs" />
     <Compile Include="Vurdalakov\EnumToBooleanConverter.cs" />
     <Compile Include="Vurdalakov\FillLastColumnBehavior.cs" />
