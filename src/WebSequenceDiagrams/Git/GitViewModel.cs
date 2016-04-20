@@ -7,32 +7,32 @@
 
     public class GitViewModel : ViewModelBase
     {
-        private Repository repository;
+        public Repository Repository { get; private set; }
 
         public GitViewModel(String fileOrDirectoryName)
         {
-            this.repository = new Repository(Path.GetDirectoryName(fileOrDirectoryName));
+            this.Repository = new Repository(Path.GetDirectoryName(fileOrDirectoryName));
         }
 
         public String GetUserName()
         {
-            return this.repository.Config.Get<String>("user.name").Value;
+            return this.Repository.Config.Get<String>("user.name").Value;
         }
 
         public String GetUserEmail()
         {
-            return this.repository.Config.Get<String>("user.email").Value;
+            return this.Repository.Config.Get<String>("user.email").Value;
         }
 
         public FileStatus GetFileStatus(String fileName)
         {
-            return this.repository.RetrieveStatus(fileName);
+            return this.Repository.RetrieveStatus(fileName);
         }
 
         public void AddFile(String fileName, String commitMessage)
         {
             // add
-            this.repository.Index.Add(fileName);
+            this.Repository.Index.Add(fileName);
 
             // stage and commit
             this.CommitFile(fileName, commitMessage);
@@ -44,10 +44,10 @@
             var committer = new Signature(this.GetUserName(), this.GetUserEmail(), DateTime.Now);
 
             // stage
-            this.repository.Stage(fileName);
+            this.Repository.Stage(fileName);
 
             // commit
-            this.repository.Commit(commitMessage, committer, committer);
+            this.Repository.Commit(commitMessage, committer, committer);
         }
 
         #region ShowCommitMessageDialog

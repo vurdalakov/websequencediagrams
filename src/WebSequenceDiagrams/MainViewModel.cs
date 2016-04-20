@@ -1,6 +1,7 @@
 ﻿namespace Vurdalakov.WebSequenceDiagrams
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
     using System.Timers;
@@ -357,6 +358,7 @@
             // Git
             this.GitAddCommand = new CommandBase(this.OnGitAddCommand);
             this.GitCommitCommand = new CommandBase(this.OnGitCommitCommand);
+            this.GitExtensionsBrowseCommand = new CommandBase(this.OnGitExtensionsBrowseCommand);
             // Plugins
             // Tools
             this.ToolsOptionsCommand = new CommandBase(this.OnToolsOptionsCommand);
@@ -758,12 +760,16 @@
 
         private GitViewModel gitViewModel;
 
+        public String GitExtensionsPathName { get; private set; }
+
         public Boolean GitFileInRepo { get; private set; }
         public Boolean GitFileAdd { get; private set; }
         public Boolean GitFileCommit { get; private set; }
 
         private void GitCheckFile(String fileName)
         {
+            // GitFileInRepo
+
             this.GitFileInRepo = false;
 
             if (!String.IsNullOrEmpty(fileName) && File.Exists(fileName))
@@ -786,6 +792,30 @@
             }
 
             this.OnPropertyChanged(() => this.GitFileInRepo);
+
+            // GitExtensionsAvailable
+
+            this.GitExtensionsPathName = null;
+
+            try
+            {
+                var gitExtensionsPathName =
+                    Registry.CurrentUser.OpenSubKey(@"SOFTWARE\GitExtensions\").
+                        GetValue("InstallDir", null, RegistryValueOptions.None) as String;
+
+                if (!String.IsNullOrEmpty(gitExtensionsPathName))
+                {
+                    gitExtensionsPathName  = Path.Combine(gitExtensionsPathName , "GitExtensions.exe");
+
+                    if (File.Exists(gitExtensionsPathName))
+                    {
+                        this.GitExtensionsPathName = gitExtensionsPathName;
+                    }
+                }
+            }
+            catch { }
+
+            this.OnPropertyChanged(() => this.GitExtensionsPathName);
         }
 
         public ICommand GitAddCommand { get; private set; }
@@ -826,6 +856,22 @@
             }
         }
 
+        public ICommand GitExtensionsBrowseCommand { get; private set; }
+        private void OnGitExtensionsBrowseCommand()
+        {
+            try
+            {
+                var processStartInfo = new ProcessStartInfo(this.GitExtensionsPathName, "browse");
+                processStartInfo.WorkingDirectory = this.gitViewModel.Repository.Info.WorkingDirectory;
+
+                Process.Start(processStartInfo);
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex, "Cannot run GitExtensions Browse:");
+            }
+        }
+        
         #endregion
     }
 }
