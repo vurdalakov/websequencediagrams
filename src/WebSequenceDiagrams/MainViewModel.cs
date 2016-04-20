@@ -180,7 +180,7 @@
         {
             get
             {
-                return String.Format("{0} - {1} {2}", this.ApplicationTitle, this.GetFileTitle(), this.DirtyFlag ? "*" : "");
+                return String.Format("{0} - {1} {2}", this.ApplicationTitleAndVersion, this.GetFileTitle(), this.DirtyFlag ? "*" : "");
             }
         }
 
