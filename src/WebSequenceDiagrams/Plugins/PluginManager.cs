@@ -23,6 +23,8 @@
                 }
             }
 
+            typeNames.Sort((p1, p2) => p1.GetMenuName().CompareTo(p2.GetMenuName()));
+
             return typeNames.ToArray();
         }
     }

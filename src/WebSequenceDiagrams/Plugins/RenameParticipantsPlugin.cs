@@ -10,7 +10,7 @@
     {
         public String GetMenuName()
         {
-            return "Renames Participants";
+            return "Renames Participants...";
         }
 
         public String GetDescription()
