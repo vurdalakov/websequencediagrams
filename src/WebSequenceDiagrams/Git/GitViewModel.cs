@@ -11,7 +11,20 @@
 
         public GitViewModel(String fileOrDirectoryName)
         {
-            this.Repository = new Repository(Path.GetDirectoryName(fileOrDirectoryName));
+            var workingDir = new DirectoryInfo(
+                File.Exists(fileOrDirectoryName) ? Path.GetDirectoryName(fileOrDirectoryName) : fileOrDirectoryName);
+
+            while ((workingDir != null) && (workingDir.GetDirectories(".git").Length != 1))
+            {
+                workingDir = workingDir.Parent;
+            }
+
+            if (null == workingDir)
+            {
+                throw new Exception("Git Repository not found");
+            }
+
+            this.Repository = new Repository(workingDir.FullName);
         }
 
         public String GetUserName()
