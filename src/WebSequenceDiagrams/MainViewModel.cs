@@ -8,6 +8,7 @@
     using System.Windows.Input;
     using System.Windows.Media.Imaging;
     using Microsoft.Win32;
+    using LibGit2Sharp;
 
     public class MainViewModel : ViewModelBase
     {
@@ -352,6 +353,10 @@
             this.ViewZoomInCommand = new CommandBase(this.OnViewZoomInCommand);
             this.ViewZoomOutCommand = new CommandBase(this.OnViewZoomOutCommand);
             this.RefreshCommand = new CommandBase(this.OnRefreshCommand);
+            // Style
+            // Git
+            this.GitAddCommand = new CommandBase(this.OnGitAddCommand);
+            // Plugins
             // Tools
             this.ToolsOptionsCommand = new CommandBase(this.OnToolsOptionsCommand);
             // Help
@@ -410,6 +415,8 @@
             this.ScriptFilePath = null;
             this.OnPropertyChanged(() => this.MainWindowTitle);
 
+            this.GitCheckFile(null);
+
             SetWsdScript(this.NewFileContent);
         }
 
@@ -454,6 +461,8 @@
 
                 this.RecentFilesMenuItems.AddFile(fileName);
                 this._settings.Set("CurrentDirectory", Path.GetDirectoryName(fileName));
+
+                this.GitCheckFile(fileName);
 
                 return true;
             }
@@ -502,6 +511,8 @@
 
                     this.RecentFilesMenuItems.AddFile(dlg.FileName);
                     this._settings.Set("CurrentDirectory", Path.GetDirectoryName(dlg.FileName));
+
+                    this.GitCheckFile(dlg.FileName);
 
                     return true;
                 }
@@ -739,5 +750,88 @@
             this.SetFocusOnScript = false;
             this.SetFocusOnScript = true;
         }
+
+        #region Git support
+
+        public Boolean GitFileInRepo { get; private set; }
+        public Boolean GitFileNew { get; private set; }
+
+        private void GitCheckFile(String fileName)
+        {
+            this.GitFileInRepo = false;
+
+            if (!String.IsNullOrEmpty(fileName) && File.Exists(fileName))
+            {
+                try
+                {
+                    using (var repo = new Repository(Path.GetDirectoryName(fileName)))
+                    {
+                        this.GitFileInRepo = true;
+
+                        var fileStatus = repo.RetrieveStatus(fileName);
+
+                        this.GitFileNew = FileStatus.NewInWorkdir == fileStatus;
+                        this.OnPropertyChanged(() => this.GitFileNew);
+                    }
+                }
+                catch { }
+            }
+
+            this.OnPropertyChanged(() => this.GitFileInRepo);
+        }
+
+        private String commitMessage = "";
+        public String GitCommitMessage
+        {
+            get
+            {
+                return this.commitMessage;
+            }
+            set
+            {
+                if (value != this.commitMessage)
+                {
+                    this.commitMessage = value;
+                    this.OnPropertyChanged(() => this.GitCommitMessage);
+                }
+            }
+        }
+
+        public ICommand GitAddCommand { get; private set; }
+        private void OnGitAddCommand()
+        {
+            this.GitCommitMessage = "";
+
+            var dlg = new GitAddWindow(Application.Current.MainWindow, this);
+            dlg.ShowDialog();
+
+            if (!dlg.DialogResult.HasValue || !dlg.DialogResult.Value)
+            {
+                return;
+            }
+
+            try
+            {
+                using (var repo = new Repository(Path.GetDirectoryName(this.ScriptFilePath)))
+                {
+                    // add
+                    repo.Index.Add(this.ScriptFileName);
+                    // stage
+                    repo.Stage(this.ScriptFileName);
+                    // committer
+                    var userName = repo.Config.Get<String>("user.name").Value;
+                    var userEmail = repo.Config.Get<String>("user.email").Value;
+                    var committer = new Signature(userName, userEmail, DateTime.Now);
+                    // commit
+                    repo.Commit(this.GitCommitMessage, committer, committer);
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex, "Cannot add file to repository");
+            }
+        }
+
+        #endregion
     }
 }

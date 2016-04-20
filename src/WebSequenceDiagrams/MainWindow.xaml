@@ -91,6 +91,9 @@
                     <MenuItem Header="rose" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Rose, Mode=TwoWay}" />
                     <MenuItem Header="roundgreen" IsCheckable="True" IsChecked="{Binding Style, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Roundgreen, Mode=TwoWay}" />
                 </MenuItem>
+                <MenuItem Header="_Git" IsEnabled="{Binding GitFileInRepo}">
+                    <MenuItem Header="_Add File..." IsEnabled="{Binding GitFileNew}" Command="{Binding GitAddCommand}" />
+                </MenuItem>
                 <MenuItem Header="_Plugins" ItemsSource="{Binding PluginMenuItems}" ItemContainerStyle="{StaticResource MenuItemStyle}">
                 </MenuItem>
                 <MenuItem Header="_Tools">

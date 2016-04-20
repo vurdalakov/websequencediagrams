@@ -41,7 +41,7 @@
         public ThreadSafeObservableCollection<ParticipantViewModel> OldUsers { get; private set; }
         public ParticipantViewModel OldUser { get; set; }
 
-        public Boolean? DialogResult { get; private set;}
+        public Boolean? DialogResult { get; private set; }
         public String OldName { get; private set; }
 
         private String newName = "";

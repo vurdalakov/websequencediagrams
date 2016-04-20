@@ -27,7 +27,7 @@
             <TextBox Text="{Binding NewName, Mode=TwoWay}" vurdalakov:TextBoxUpdateSourceBehavior.UpdateSourceOnChange="True" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
                 <Button Content="OK" Margin="0,0,8,0" Width="64" IsDefault="True" Command="{Binding OkCommand}" IsEnabled="{Binding NewName.Length, Converter={StaticResource ZeroToFalseConverter}}" />
-                <Button Content="Cancels" Margin="8,0,0,0" Width="64" IsCancel="True" />
+                <Button Content="Cancel" Margin="8,0,0,0" Width="64" IsCancel="True" />
             </StackPanel>
         </StackPanel>
     </Grid>
