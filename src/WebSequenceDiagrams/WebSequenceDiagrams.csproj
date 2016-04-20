@@ -75,9 +75,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Git\GitAddWindow.xaml.cs">
-      <DependentUpon>GitAddWindow.xaml</DependentUpon>
+    <Compile Include="Git\GitCommitMessageWindow.xaml.cs">
+      <DependentUpon>GitCommitMessageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Git\GitViewModel.cs" />
     <Compile Include="OptionsViewModel.cs" />
     <Compile Include="OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
@@ -134,7 +135,7 @@
     <Compile Include="WebSequenceDiagramsException.cs" />
     <Compile Include="WebSequenceDiagramsResult.cs" />
     <Compile Include="WebSequenceDiagramsStyle.cs" />
-    <Page Include="Git\GitAddWindow.xaml">
+    <Page Include="Git\GitCommitMessageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

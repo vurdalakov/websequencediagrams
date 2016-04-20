@@ -356,6 +356,7 @@
             // Style
             // Git
             this.GitAddCommand = new CommandBase(this.OnGitAddCommand);
+            this.GitCommitCommand = new CommandBase(this.OnGitCommitCommand);
             // Plugins
             // Tools
             this.ToolsOptionsCommand = new CommandBase(this.OnToolsOptionsCommand);
@@ -478,8 +479,10 @@
         {
             if (this._scriptFilePath != null)
             {
-                File.WriteAllText(_scriptFilePath, this.WsdScript);
+                File.WriteAllText(this._scriptFilePath, this.WsdScript);
                 this.DirtyFlag = false;
+
+                this.GitCheckFile(this._scriptFilePath);
             }
         }
 
@@ -753,8 +756,11 @@
 
         #region Git support
 
+        private GitViewModel gitViewModel;
+
         public Boolean GitFileInRepo { get; private set; }
-        public Boolean GitFileNew { get; private set; }
+        public Boolean GitFileAdd { get; private set; }
+        public Boolean GitFileCommit { get; private set; }
 
         private void GitCheckFile(String fileName)
         {
@@ -764,15 +770,17 @@
             {
                 try
                 {
-                    using (var repo = new Repository(Path.GetDirectoryName(fileName)))
-                    {
-                        this.GitFileInRepo = true;
+                    this.gitViewModel = new GitViewModel(fileName);
 
-                        var fileStatus = repo.RetrieveStatus(fileName);
+                    this.GitFileInRepo = true;
 
-                        this.GitFileNew = FileStatus.NewInWorkdir == fileStatus;
-                        this.OnPropertyChanged(() => this.GitFileNew);
-                    }
+                    var fileStatus = gitViewModel.GetFileStatus(fileName);
+
+                    this.GitFileAdd = FileStatus.NewInWorkdir == fileStatus;
+                    this.OnPropertyChanged(() => this.GitFileAdd);
+
+                    this.GitFileCommit = FileStatus.ModifiedInWorkdir == fileStatus;
+                    this.OnPropertyChanged(() => this.GitFileCommit);
                 }
                 catch { }
             }
@@ -780,55 +788,41 @@
             this.OnPropertyChanged(() => this.GitFileInRepo);
         }
 
-        private String commitMessage = "";
-        public String GitCommitMessage
-        {
-            get
-            {
-                return this.commitMessage;
-            }
-            set
-            {
-                if (value != this.commitMessage)
-                {
-                    this.commitMessage = value;
-                    this.OnPropertyChanged(() => this.GitCommitMessage);
-                }
-            }
-        }
-
         public ICommand GitAddCommand { get; private set; }
         private void OnGitAddCommand()
         {
-            this.GitCommitMessage = "";
-
-            var dlg = new GitAddWindow(Application.Current.MainWindow, this);
-            dlg.ShowDialog();
-
-            if (!dlg.DialogResult.HasValue || !dlg.DialogResult.Value)
-            {
-                return;
-            }
-
             try
             {
-                using (var repo = new Repository(Path.GetDirectoryName(this.ScriptFilePath)))
+                var commitMessage = this.gitViewModel.ShowCommitMessageDialog("Add File");
+
+                if (!String.IsNullOrEmpty(commitMessage))
                 {
-                    // add
-                    repo.Index.Add(this.ScriptFileName);
-                    // stage
-                    repo.Stage(this.ScriptFileName);
-                    // committer
-                    var userName = repo.Config.Get<String>("user.name").Value;
-                    var userEmail = repo.Config.Get<String>("user.email").Value;
-                    var committer = new Signature(userName, userEmail, DateTime.Now);
-                    // commit
-                    repo.Commit(this.GitCommitMessage, committer, committer);
+                    this.gitViewModel.AddFile(this.ScriptFilePath, commitMessage);
+                    this.GitCheckFile(this.ScriptFilePath);
                 }
             }
             catch (Exception ex)
             {
-                MsgBox.Error(ex, "Cannot add file to repository");
+                MsgBox.Error(ex, "Cannot add file to repository:");
+            }
+        }
+
+        public ICommand GitCommitCommand { get; private set; }
+        private void OnGitCommitCommand()
+        {
+            try
+            {
+                var commitMessage = this.gitViewModel.ShowCommitMessageDialog("Commit");
+
+                if (!String.IsNullOrEmpty(commitMessage))
+                {
+                    this.gitViewModel.CommitFile(this.ScriptFilePath, commitMessage);
+                    this.GitCheckFile(this.ScriptFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex, "Cannot commit to repository:");
             }
         }
 

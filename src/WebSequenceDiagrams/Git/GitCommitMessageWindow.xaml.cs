@@ -3,9 +3,9 @@
     using System;
     using System.Windows;
 
-    public partial class GitAddWindow : Window
+    public partial class GitCommitMessageWindow : Window
     {
-        public GitAddWindow(Window owner, ViewModelBase viewModelBase)
+        public GitCommitMessageWindow(Window owner, ViewModelBase viewModelBase)
         {
             InitializeComponent();
 
