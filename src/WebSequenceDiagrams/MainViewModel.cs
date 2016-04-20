@@ -315,7 +315,7 @@
 
         public String NewFileContent
         {
-            get { return this._settings.Get("NewFileContent", "title Simple Sequence Diagram\r\nClient->Server: send request\r\nServer->Client: return response").Replace("$$$$$", Environment.NewLine); }
+            get { return this._settings.Get("NewFileContent", "title Simple Sequence Diagram\r\nClient->Server: send request\r\nServer-->Client: return response").Replace("$$$$$", Environment.NewLine); }
             set { this._settings.Set("NewFileContent", value.Replace(Environment.NewLine, "$$$$$")); }
         }
 
@@ -376,6 +376,17 @@
 
         public override void OnMainWindowLoaded()
         {
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
+                if (!OpenFile(args[1]))
+                {
+                    this.FileNewCommand.Execute(null);
+                }
+
+                return;
+            }
+
             var lastEditedFile = this.RecentFilesMenuItems.GetMostRecentFile();
             if (!this.OpenLastEditedFileOnStartup || String.IsNullOrEmpty(lastEditedFile) || !OpenFile(lastEditedFile))
             {
