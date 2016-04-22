@@ -81,6 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Git\GitRemoteWindow.xaml.cs">
+      <DependentUpon>GitRemoteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Git\GitCommitMessageWindow.xaml.cs">
       <DependentUpon>GitCommitMessageWindow.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,7 @@
     <Compile Include="Vurdalakov\NameValueViewModel.cs" />
     <Compile Include="Vurdalakov\FormatMenuItemHeaderConverter.cs" />
     <Compile Include="Vurdalakov\NullToFalseConverter.cs" />
+    <Compile Include="Vurdalakov\PasswordBoxBindingBehavior.cs" />
     <Compile Include="Vurdalakov\ZeroToFalseConverter.cs" />
     <Compile Include="Vurdalakov\NullToHiddenConverter.cs" />
     <Compile Include="Vurdalakov\PermanentSettings.cs" />
@@ -140,6 +144,10 @@
     <Compile Include="WebSequenceDiagramsException.cs" />
     <Compile Include="WebSequenceDiagramsResult.cs" />
     <Compile Include="WebSequenceDiagramsStyle.cs" />
+    <Page Include="Git\GitRemoteWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Git\GitCommitMessageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

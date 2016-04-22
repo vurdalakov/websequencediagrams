@@ -358,6 +358,8 @@
             // Git
             this.GitAddCommand = new CommandBase(this.OnGitAddCommand);
             this.GitCommitCommand = new CommandBase(this.OnGitCommitCommand);
+            this.GitPushCommand = new CommandBase(this.OnGitPushCommand);
+            this.GitPullCommand = new CommandBase(this.OnGitPullCommand);
             this.GitExtensionsBrowseCommand = new CommandBase(this.OnGitExtensionsBrowseCommand);
             // Plugins
             // Tools
@@ -765,6 +767,7 @@
         public Boolean GitFileInRepo { get; private set; }
         public Boolean GitFileAdd { get; private set; }
         public Boolean GitFileCommit { get; private set; }
+        public Boolean GitRemoteAvailable { get; private set; }
 
         private void GitCheckFile(String fileName)
         {
@@ -780,13 +783,16 @@
 
                     this.GitFileInRepo = true;
 
-                    var fileStatus = gitViewModel.GetFileStatus(fileName);
+                    var fileStatus = this.gitViewModel.GetFileStatus(fileName);
 
                     this.GitFileAdd = FileStatus.NewInWorkdir == fileStatus;
                     this.OnPropertyChanged(() => this.GitFileAdd);
 
                     this.GitFileCommit = FileStatus.ModifiedInWorkdir == fileStatus;
                     this.OnPropertyChanged(() => this.GitFileCommit);
+
+                    this.GitRemoteAvailable = this.gitViewModel.AreRemotesAvailable();
+                    this.OnPropertyChanged(() => this.GitRemoteAvailable);
                 }
                 catch { }
             }
@@ -853,6 +859,38 @@
             catch (Exception ex)
             {
                 MsgBox.Error(ex, "Cannot commit to repository:");
+            }
+        }
+
+        public ICommand GitPushCommand { get; private set; }
+        private void OnGitPushCommand()
+        {
+            try
+            {
+                if (this.gitViewModel.ShowRemoteDialog("Push"))
+                {
+                    this.gitViewModel.Push(this.gitViewModel.RemoteName, this.gitViewModel.BranchName, this.gitViewModel.UserName, this.gitViewModel.Password);
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex, "Cannot push to repository:");
+            }
+        }
+
+        public ICommand GitPullCommand { get; private set; }
+        private void OnGitPullCommand()
+        {
+            try
+            {
+                if (this.gitViewModel.ShowRemoteDialog("Pull"))
+                {
+                    this.gitViewModel.Pull(this.gitViewModel.UserName, this.gitViewModel.Password);
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex, "Cannot pull from repository:");
             }
         }
 

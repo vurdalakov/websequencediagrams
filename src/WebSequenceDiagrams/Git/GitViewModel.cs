@@ -1,8 +1,9 @@
 ﻿namespace Vurdalakov.WebSequenceDiagrams
 {
     using System;
-    using System.Windows;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Windows;
     using LibGit2Sharp;
 
     public class GitViewModel : ViewModelBase
@@ -37,6 +38,16 @@
             return this.Repository.Config.Get<String>("user.email").Value;
         }
 
+        public Boolean AreRemotesAvailable()
+        {
+            foreach (var remote in this.Repository.Network.Remotes)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public FileStatus GetFileStatus(String fileName)
         {
             return this.Repository.RetrieveStatus(fileName);
@@ -61,6 +72,38 @@
 
             // commit
             this.Repository.Commit(commitMessage, committer, committer);
+        }
+
+        public void Push(String remoteName, String branchName, String userName, String password)
+        {
+            var remote = this.Repository.Network.Remotes[remoteName];
+            var branch = this.Repository.Branches[branchName].CanonicalName; // "refs/heads/master"
+
+            var pushOptions = new PushOptions();
+            if (!String.IsNullOrEmpty(userName) && !String.IsNullOrEmpty(password))
+            {
+                pushOptions.CredentialsProvider = (url, username, types) => new UsernamePasswordCredentials { Username = userName, Password = password };
+            }
+
+            this.Repository.Network.Push(remote, branch, pushOptions);
+        }
+
+        public void Pull(String userName, String password)
+        {
+            var pullOptions = new PullOptions();
+            if (!String.IsNullOrEmpty(userName) && !String.IsNullOrEmpty(password))
+            {
+                pullOptions.FetchOptions.CredentialsProvider = (url, username, types) => new UsernamePasswordCredentials { Username = userName, Password = password };
+            }
+
+            var committer = new Signature(this.GetUserName(), this.GetUserEmail(), DateTime.Now);
+
+            var mergeResult = this.Repository.Network.Pull(committer, pullOptions);
+
+            if (MergeStatus.Conflicts == mergeResult.Status)
+            {
+                throw new Exception("Merge resulted in conflicts.");
+            }
         }
 
         #region ShowCommitMessageDialog
@@ -100,6 +143,36 @@
             }
 
             return this.CommitMessage;
+        }
+
+        #endregion
+
+        #region ShowRemoteDialog
+
+        public String RemoteWindowTitle { get; private set; }
+        public List<String> RemoteNames { get; private set; }
+        public String RemoteName { get; set; }
+        public String BranchName { get; private set; }
+        public String UserName { get; set; }
+        public String Password { get; set; }
+
+        public Boolean ShowRemoteDialog(String dialogTitle)
+        {
+            this.RemoteWindowTitle = dialogTitle;
+            this.BranchName = this.Repository.Head.FriendlyName;
+            this.UserName = this.GetUserName();
+
+            this.RemoteNames = new List<String>();
+            foreach (var remote in this.Repository.Network.Remotes)
+            {
+                this.RemoteNames.Add(remote.Name);
+            }
+            this.RemoteName = this.RemoteNames[0];
+
+            var dlg = new GitRemoteWindow(Application.Current.MainWindow, this);
+            dlg.ShowDialog();
+
+            return dlg.DialogResult.HasValue && dlg.DialogResult.Value;
         }
 
         #endregion

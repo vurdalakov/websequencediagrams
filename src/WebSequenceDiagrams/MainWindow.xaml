@@ -95,6 +95,9 @@
                     <MenuItem Header="_Add File and Commit..." IsEnabled="{Binding GitFileAdd}" Command="{Binding GitAddCommand}" />
                     <MenuItem Header="_Commit..." IsEnabled="{Binding GitFileCommit}" Command="{Binding GitCommitCommand}" />
                     <Separator />
+                    <MenuItem Header="Pu_sh..." IsEnabled="{Binding GitRemoteAvailable}" Command="{Binding GitPushCommand}" />
+                    <MenuItem Header="Pu_ll..." IsEnabled="{Binding GitRemoteAvailable}" Command="{Binding GitPullCommand}" />
+                    <Separator />
                     <MenuItem Header="GitExtensions _Browse" IsEnabled="{Binding GitExtensionsPathName, Converter={StaticResource NullToFalseConverter}}" Command="{Binding GitExtensionsBrowseCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Plugins" ItemsSource="{Binding PluginMenuItems}" ItemContainerStyle="{StaticResource MenuItemStyle}">
@@ -103,7 +106,7 @@
                     <MenuItem Header="_Options..." Command="{Binding ToolsOptionsCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Help">
-                    <MenuItem Header="_WebSequenceDiagrams.com" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/" />
+                    <MenuItem Header="_WebSequenceDiagrams" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/" />
                     <MenuItem Header="_Script Examples" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/examples.html" />
                     <Separator />
                     <MenuItem Header="_About..." Command="{Binding AboutCommand}" />
