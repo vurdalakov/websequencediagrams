@@ -360,6 +360,7 @@
             this.GitCommitCommand = new CommandBase(this.OnGitCommitCommand);
             this.GitPushCommand = new CommandBase(this.OnGitPushCommand);
             this.GitPullCommand = new CommandBase(this.OnGitPullCommand);
+            this.GitCommandLineCommand = new CommandBase(this.OnGitCommandLineCommand);
             this.GitExtensionsBrowseCommand = new CommandBase(this.OnGitExtensionsBrowseCommand);
             // Plugins
             // Tools
@@ -894,6 +895,22 @@
             }
         }
 
+        public ICommand GitCommandLineCommand { get; private set; }
+        private void OnGitCommandLineCommand()
+        {
+            try
+            {
+                var processStartInfo = new ProcessStartInfo("cmd.exe", "/k dir *.wsd /d");
+                processStartInfo.WorkingDirectory = Path.GetDirectoryName(this.ScriptFilePath);
+
+                Process.Start(processStartInfo);
+            }
+            catch (Exception ex)
+            {
+                MsgBox.Error(ex, "Cannot start Git command line:");
+            }
+        }
+
         public ICommand GitExtensionsBrowseCommand { get; private set; }
         private void OnGitExtensionsBrowseCommand()
         {
@@ -906,10 +923,10 @@
             }
             catch (Exception ex)
             {
-                MsgBox.Error(ex, "Cannot run GitExtensions Browse:");
+                MsgBox.Error(ex, "Cannot start GitExtensions Browse:");
             }
         }
-        
+
         #endregion
     }
 }

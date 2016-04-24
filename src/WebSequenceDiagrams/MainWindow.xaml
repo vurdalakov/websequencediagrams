@@ -98,6 +98,7 @@
                     <MenuItem Header="Pu_sh..." IsEnabled="{Binding GitRemoteAvailable}" Command="{Binding GitPushCommand}" />
                     <MenuItem Header="Pu_ll..." IsEnabled="{Binding GitRemoteAvailable}" Command="{Binding GitPullCommand}" />
                     <Separator />
+                    <MenuItem Header="_Git Command Line" Command="{Binding GitCommandLineCommand}" />
                     <MenuItem Header="GitExtensions _Browse" IsEnabled="{Binding GitExtensionsPathName, Converter={StaticResource NullToFalseConverter}}" Command="{Binding GitExtensionsBrowseCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Plugins" ItemsSource="{Binding PluginMenuItems}" ItemContainerStyle="{StaticResource MenuItemStyle}">
