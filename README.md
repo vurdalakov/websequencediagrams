@@ -6,7 +6,7 @@ A Windows desktop editor for [WebSequenceDiagrams](https://www.websequencediagra
 
 Version 1.00 (25.04.2016)
 
-* [portable version (ZIP)](https://raw.githubusercontent.com/vurdalakov/websequencediagrams/master/zip/WebSequenceDiagramsDesktopEditor_1_00.zip)
+* [portable version (ZIP)](https://raw.githubusercontent.com/vurdalakov/websequencediagrams/master/zip/WebSequenceDiagramsDesktopEditor_1_00.zip) - right-click and select `Save link as`
 
 ![Screenshot of WebSequenceDiagrams.com Desktop Editor](https://raw.githubusercontent.com/vurdalakov/websequencediagrams/master/img/screenshot1.png)
 
@@ -27,7 +27,7 @@ Version 1.00 (25.04.2016)
 * Remembers last 5 edited files.
 * Can open last edited file at startup.
 
-<small><sup>*</sup>Requires WebSequenceDiagrams [premium subscription](https://www.websequencediagrams.com/order.html)</small>
+<small><sup>*</sup> Requires WebSequenceDiagrams [premium subscription](https://www.websequencediagrams.com/order.html)</small>
 
 ### Acknowledgements
 
