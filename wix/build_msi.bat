@@ -3,7 +3,7 @@
 set wixpath=..\..\src\packages\WiX.3.10.2\tools
 set candle="%wixpath%\candle.exe"
 set light="%wixpath%\light.exe"
-set replace=cscript //nologo ReplaceText.vbs
+set replace=freplace.exe
 set output=output.txt
 
 set filename=WebSequenceDiagramsDesktopEditor
@@ -39,7 +39,7 @@ for /f "delims=. tokens=1,2" %%a in ('sigcheck.exe -q -n %exefile%') do (
 
 if exist ..\%msi% del ..\%msi%
 
-%replace% %wxs% ApplicationVersion %version% 1> %output% 2>&1
+%replace% %wxs% "ApplicationVersion" "%version%" 1> %output% 2>&1
 if %errorlevel% neq 0 goto error
 
 %candle% %wxs% -ext WiXNetFxExtension -ext WixUtilExtension 1> %output% 2>&1
