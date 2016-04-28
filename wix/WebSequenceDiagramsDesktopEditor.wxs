@@ -54,6 +54,7 @@
               </File>
               <File Id='ICSharpCode.AvalonEdit.dll' Name='ICSharpCode.AvalonEdit.dll' Source='ICSharpCode.AvalonEdit.dll' DiskId='1' />
               <File Id='Newtonsoft.Json.dll' Name='Newtonsoft.Json.dll' Source='Newtonsoft.Json.dll' DiskId='1' />
+              <File Id='LibGit2Sharp.dll' Name='LibGit2Sharp.dll' Source='LibGit2Sharp.dll' DiskId='1' />
             </Component>
              
           </Directory>
