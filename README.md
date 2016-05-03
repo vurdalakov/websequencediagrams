@@ -13,7 +13,7 @@ Version 1.00 (25.04.2016)
 ### Features
 
 * Syntax highlighting.
-* Git support.
+* Git/GitHub integration.
 * Easy error fixing.
 * Advanced editing features:
   * Extract participant names through the whole script to `participant` clauses.
