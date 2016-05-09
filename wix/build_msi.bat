@@ -33,9 +33,14 @@ cd %builddir%
 
 reg.exe ADD "HKCU\Software\Sysinternals\Sigcheck" /v EulaAccepted /t REG_DWORD /d 1 /f >nul
 for /f "delims=. tokens=1,2" %%a in ('sigcheck.exe -q -n %exefile%') do (
-    set version=%%a.%%b
-    set msi=%filename%_%%a_%%b.msi
+    set v1=%%a
+    set v2=%%b
     )
+
+set version=%v1%.%v2%
+set v2=0%v2%
+set v2=%v2:~-2%
+set msi=%filename%_%v1%_%v2%.msi
 
 if exist ..\%msi% del ..\%msi%
 
