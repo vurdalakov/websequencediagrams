@@ -27,6 +27,7 @@
         <KeyBinding Key="OemPlus" Modifiers="Ctrl" Command="{Binding ViewZoomInCommand}" />
         <KeyBinding Key="OemMinus" Modifiers="Ctrl" Command="{Binding ViewZoomOutCommand}" />
         <KeyBinding Key="F5" Modifiers="" Command="{Binding RefreshCommand}" />
+        <KeyBinding Key="F1" Modifiers="" Command="{Binding OpenLinkCommand}" CommandParameter="https://github.com/vurdalakov/websequencediagrams/wiki/Help" />
     </Window.InputBindings>
 
     <Grid vurdalakov:GridSplitterBehavior.SaveAndRestore="MainWindow">
@@ -107,6 +108,8 @@
                     <MenuItem Header="_Options..." Command="{Binding ToolsOptionsCommand}" />
                 </MenuItem>
                 <MenuItem Header="_Help">
+                    <MenuItem Header="Online _Help" InputGestureText="F1" Command="{Binding OpenLinkCommand}" CommandParameter="https://github.com/vurdalakov/websequencediagrams/wiki/Help" />
+                    <Separator />
                     <MenuItem Header="_WebSequenceDiagrams" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/" />
                     <MenuItem Header="_Script Examples" Command="{Binding OpenLinkCommand}" CommandParameter="https://www.websequencediagrams.com/examples.html" />
                     <Separator />
